@@ -1,10 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Main luokka kysyy tällä hetkellä listan laatikoista, ja antaa algoritmin
+ * mukaisen pakkausjärjestyksen.
  */
 package dynamicprogramming.boxstacking;
-
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,7 +15,6 @@ public class Main {
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot();
 
         while (true) {
             System.out.println("Lisataanko laatikko, 'K'','E'");
@@ -28,13 +25,21 @@ public class Main {
             }
 
         }
-        int[] pakkausjarjestys = jarjestalaatikot.AnnaPakkausajarjestys(laatikot);
-        for(int temp : pakkausjarjestys){
+
+        JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot(laatikot);
+        int[] pakkausjarjestys = jarjestalaatikot.AnnaPakkausajarjestys();
+        System.out.println("Laatikoiden pakkausjarjestys:");
+        for (int temp : pakkausjarjestys) {
             System.out.println(temp);
         }
-        
+
     }
 
+    /**
+     *
+     * Lisätään laatikko luokkamuuttujaan 'laatikot'.
+     *
+     */
     public static void Laatikonlisays() {
         Scanner input = new Scanner(System.in);
         int[] laatikko = new int[3];

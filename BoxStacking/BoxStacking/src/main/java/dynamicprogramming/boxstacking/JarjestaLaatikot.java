@@ -1,38 +1,63 @@
-
 package dynamicprogramming.boxstacking;
-
 
 import java.util.ArrayList;
 
+/**
+ * Luokkaan tulee kaikki tarvittavat metodit laatikoiden järjestämiseksi
+ * mahdollisimman pieneen tilaan. Luokka käyttää luokkamuuttujia.
+ */
 public class JarjestaLaatikot {
 
-    //annetaan laatikot taulukossa leveys, syvyys, korkeus.
-
-    public int[] laatikko = new int[3];
     //laatikot annetaan listassa
     public ArrayList<int[]> laatikot = new ArrayList<>();
     //kontin annetaan taulukossa leveys, syvyys, korkeus
-    public int[] kontti = new int[3];
+    public int[] kontti = {0, 0, 0};
 
-    public int[] AnnaPakkausajarjestys(ArrayList<int[]> laatikot) {
-        int[] pakkausjarjestys = new int[laatikot.size()];
+    /**
+     * Luodaan luokka. Laatikot annetaan Array Listinä taulukoita, joihin on
+     * merkitty järjestyksessä laatikon leveys, syvyys ja korkeus,
+     *
+     * @param laatikot Lista laatikoista
+     */
+    public JarjestaLaatikot(ArrayList<int[]> laatikot) {
         this.laatikot = laatikot;
+
+    }
+
+    /**
+     * Antaa annetuiden laatikoiden pakkausjärjestyksen.
+     *
+     * @return Laatikoiden indeksit taulukossa pakkausjärjestyksessä.
+     */
+    public int[] AnnaPakkausajarjestys() {
+        int[] pakkausjarjestys = new int[laatikot.size()];
         for (int i = 0; i < this.laatikot.size(); i++) {
-            pakkausjarjestys[i] = MaaritaSuurimmanPintaAlanIndeksi(this.laatikot);
+            pakkausjarjestys[i] = MaaritaSuurimmanPintaAlanIndeksiJaPoistaListasta();
         }
         return pakkausjarjestys;
     }
 
-    public void MaaritaKontinMitat(int[] kontti, ArrayList<int[]> laatikot) {
+    /**
+     * Määrittää kontin mitat aluksi 'suurimman' laatikon mukaan.
+     *
+     */
+    public void MaaritaKontinMitat() {
         //Leveydeksi määritellään pisin laatikoiden sivujen mitta.
-        kontti[0] = EtsiPisinMitta(0, laatikot);
+        kontti[0] = EtsiPisinMitta(0);
         //Syvyydeksi määritellään toiseksi pisi laatikoiden sivujen mitta.
-        kontti[1] = EtsiPisinMitta(1, laatikot);
+        kontti[1] = EtsiPisinMitta(1);
         //korkeudeksi määritellään nolla, sitä kasvatetaan pakkaamisen edetessä
         kontti[2] = 0;
     }
 
-    public int EtsiPisinMitta(int sivu, ArrayList<int[]> laatikot) {
+    /**
+     * Etsii pisimmän sivun mitan laatikoiden joukosta.
+     * 
+     *
+     * @param sivu 1=leveys, 2=syvyys, 3=korkeus.
+     * @return
+     */
+    public int EtsiPisinMitta(int sivu) {
         int pisin = 0;
         for (int[] temp : laatikot) {
             if (temp[sivu] > pisin) {
@@ -42,7 +67,15 @@ public class JarjestaLaatikot {
         return pisin;
     }
 
-    public int MaaritaSuurimmanPintaAlanIndeksi(ArrayList<int[]> laatikot) {
+    /**
+     * Laskee monennellako laatikolla on suurin pinta-ala. Syöttää laatikon
+     * indeksin, ja asettaa (toistaiseksi) laatikon tilavuudeksi nollan.
+     * (nollalaatikko {0,0,0})
+     *
+     * @return Palauttaa laatikoiden joukosta suurimman pinta-alan omaavaan
+     * laatikon indeksin.
+     */
+    public int MaaritaSuurimmanPintaAlanIndeksiJaPoistaListasta() {
         int suurinpinta = 0;
         int suurimmanlaatikonindeksi = 0;
         for (int[] temp : laatikot) {
