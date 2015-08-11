@@ -32,8 +32,11 @@ public class JarjestaLaatikot {
     public int[] AnnaPakkausajarjestys() {
         int[] pakkausjarjestys = new int[laatikot.size()];
         for (int i = 0; i < this.laatikot.size(); i++) {
-            pakkausjarjestys[i] = MaaritaSuurimmanPintaAlanIndeksiJaPoistaListasta();
+            pakkausjarjestys[i] = VAIHE1MaaritaSuurimmanPintaAlanIndeksi(this.laatikot);
+            int[] nollataulukko = {0, 0, 0};
+            this.laatikot.set(pakkausjarjestys[i], nollataulukko);
         }
+
         return pakkausjarjestys;
     }
 
@@ -52,7 +55,7 @@ public class JarjestaLaatikot {
 
     /**
      * Etsii pisimmän sivun mitan laatikoiden joukosta.
-     * 
+     *
      *
      * @param sivu 1=leveys, 2=syvyys, 3=korkeus.
      * @return
@@ -72,10 +75,11 @@ public class JarjestaLaatikot {
      * indeksin, ja asettaa (toistaiseksi) laatikon tilavuudeksi nollan.
      * (nollalaatikko {0,0,0})
      *
+     * @param laatikot Haluttu lista laatikoista
      * @return Palauttaa laatikoiden joukosta suurimman pinta-alan omaavaan
      * laatikon indeksin.
      */
-    public int MaaritaSuurimmanPintaAlanIndeksiJaPoistaListasta() {
+    public int VAIHE1MaaritaSuurimmanPintaAlanIndeksi(ArrayList<int[]> laatikot) {
         int suurinpinta = 0;
         int suurimmanlaatikonindeksi = 0;
         for (int[] temp : laatikot) {
@@ -92,9 +96,22 @@ public class JarjestaLaatikot {
             }
         }
 
-        int[] nollataulukko = {0, 0, 0};
-        this.laatikot.set(suurimmanlaatikonindeksi, nollataulukko);
         return suurimmanlaatikonindeksi;
+    }
+
+    /**
+     * Kokeilee mahtuuko VAIHEESSA 1 valitun laatikon viereen vielä laatikoita.
+     * Sijoittaa niin monta kuin mahtuu. (Tämän jälkeen palataan vaiheeseen 1.)
+     *
+     * @return
+     */
+    public int VAIHE2KokeileMahtuukoViereen() {
+               
+        
+        
+        
+        return 0;
+
     }
 
 }
