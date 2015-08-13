@@ -36,10 +36,7 @@ public class JarjestaLaatikkoTest {
     
   @Test
 public void Lisaalaatikko() {
-    JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot(laatikot);
-    kt.lisaaKayttaja("Testi-teppo", "donerkebap");
-        
-    assertTrue(kt.getKayttajienLkm() == 1);
+  
 }
      
 }
