@@ -1,0 +1,2 @@
+Viikolla kolme olen parannellut algoritmia toimimaan jopa oikein periaattein. Käytän rekursiivisia metodeita, ja olen pyrkinyt siirtämään lähteessäni esitetyn algoritmin koodiin. Koodi ei vielä toimi aivan kuin pitäisi, sillä siinä tulee muistin ylivuotoa. Paljon on bugeja. En ole ehtinyt vielä tekemään Junit- testausta, edellä mainituista syistä. 
+Kun saan algoritmin toimimaan, kasaan sen siihen malliin että palautusarvot "tyhjää tilaa", "kontin koko", "käytetty aika", "pakkausjarjestys" saataisiin toimimaan.

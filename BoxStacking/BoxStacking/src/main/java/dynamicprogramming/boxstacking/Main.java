@@ -27,11 +27,8 @@ public class Main {
         }
 
         JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot(laatikot);
-        int[] pakkausjarjestys = jarjestalaatikot.AnnaPakkausajarjestys();
-        System.out.println("Laatikoiden pakkausjarjestys:");
-        for (int temp : pakkausjarjestys) {
-            System.out.println(temp);
-        }
+        jarjestalaatikot.VAIHE1();
+      
 
     }
 
