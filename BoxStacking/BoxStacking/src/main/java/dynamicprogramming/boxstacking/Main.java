@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static ArrayList<int[]> laatikot = new ArrayList<>();
+    public static ArrayList<Laatikko> laatikot = new ArrayList<>();
 
     //laatikot annetaan listassa
     @SuppressWarnings("empty-statement")
@@ -27,9 +27,7 @@ public class Main {
         }
 
         JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot(laatikot);
-        jarjestalaatikot.VAIHE1();
-      
-
+        jarjestalaatikot.Aloita();
     }
 
     /**
@@ -39,12 +37,14 @@ public class Main {
      */
     public static void Laatikonlisays() {
         Scanner input = new Scanner(System.in);
-        int[] laatikko = new int[3];
+        int[] laatikonmitat = new int[3];
         System.out.println("Anna mitat leveys, syvyys, korkeus");
         for (int i = 0; i < 3; i++) {
             int luku = input.nextInt();
-            laatikko[i] = luku;
+            laatikonmitat[i] = luku;
         }
+
+        Laatikko laatikko = new Laatikko(laatikonmitat[0], laatikonmitat[1], laatikonmitat[2]);
         laatikot.add(laatikko);
         input.reset();
     }

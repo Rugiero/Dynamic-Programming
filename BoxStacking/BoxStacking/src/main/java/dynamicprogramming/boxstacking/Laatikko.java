@@ -88,23 +88,21 @@ public class Laatikko {
         return pituus * korkeus * leveys;
     }
 
-    
-    
-    public boolean equals(Laatikko o) {
-        if (o instanceof Laatikko) {
-            Laatikko c = (Laatikko) o;
-            boolean pisinmitta = (c.LaatikonPisimmanSivunMitta() == o.LaatikonPisimmanSivunMitta());
-            boolean lyhyinmitta = (c.LaatikonLyhyimmanSivunMitta() == o.LaatikonLyhyimmanSivunMitta());
-            boolean keskimitta = (c.LaatikonToiseksiPisimmanSivunMitta() == o.LaatikonToiseksiPisimmanSivunMitta());
-            
-            
-            
-            if (pisinmitta && lyhyinmitta && keskimitta) 
-            {
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Laatikoita ei voi suoraan vertailla sivuja yksi yhteen vertaamalla, sillä
+     * ne voivat olla missä tahansa asennossa. Metodi palauttaa true jos
+     * laatikot ovat samat jossain asennossa.
+     *
+     * @author iangervu@cs
+     * @param o
+     * @return
+     */
+    public boolean OnkoSama(Laatikko o) {
+
+        boolean pisinmitta = (LaatikonPisimmanSivunMitta() == o.LaatikonPisimmanSivunMitta());
+        boolean lyhyinmitta = (LaatikonLyhyimmanSivunMitta() == o.LaatikonLyhyimmanSivunMitta());
+        boolean keskimitta = (LaatikonToiseksiPisimmanSivunMitta() == o.LaatikonToiseksiPisimmanSivunMitta());
+        return pisinmitta && lyhyinmitta && keskimitta;
     }
 
 }

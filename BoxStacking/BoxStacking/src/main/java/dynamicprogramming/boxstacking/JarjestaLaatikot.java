@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Luokkaan tulee kaikki tarvittavat metodit laatikoiden järjestämiseksi
  * mahdollisimman pieneen tilaan. Luokka käyttää luokkamuuttujia.
  */
-public final class JarjestaLaatikot {
+public class JarjestaLaatikot {
 
     public ArrayList<Laatikko> laatikot;
     public Kontti kontti;
@@ -23,10 +23,16 @@ public final class JarjestaLaatikot {
      */
     public JarjestaLaatikot(ArrayList<Laatikko> laatikot) {
         this.laatikot = laatikot;
-        alajarjestys = JarjestaAlanMukaan(this.laatikot);
-        tilavuusjarjestys = JarjestaTilavuudenMukaan(this.laatikot);
-        MaaritaKontinMitat();
+        kontti = new Kontti();
 
+    }
+
+    public void Aloita() {
+        JarjestaAlanMukaan();
+        JarjestaTilavuudenMukaan();
+        MaaritaKontinMitat();
+        VAIHE1();
+        System.out.println("Järjestetty!");
     }
 
     /**
@@ -68,12 +74,12 @@ public final class JarjestaLaatikot {
      */
     public void VAIHE1() {
 
-        while (!alajarjestys.isEmpty()) {
+        if (!alajarjestys.isEmpty()) {
 
             kontti.korkeus = kontti.korkeus + alajarjestys.get(0).korkeus;
             AsetaLaatikkoVAIHEESSA1();
         }
-        System.out.println("Järjestetty!");
+
     }
 
     /**
@@ -86,7 +92,7 @@ public final class JarjestaLaatikot {
             @Override
             public int compare(Laatikko arg0, Laatikko arg1) {
                 if (arg0.LaatikonAla() == arg1.LaatikonAla()) {
-                    return arg0.korkeus - arg1.korkeus;
+                    return arg1.korkeus - arg0.korkeus;
                 }
                 return arg0.LaatikonAla() - arg1.LaatikonAla();
             }
@@ -104,9 +110,6 @@ public final class JarjestaLaatikot {
         Comparator<Laatikko> Tilavuusjarjestys = new Comparator<Laatikko>() {
             @Override
             public int compare(Laatikko arg0, Laatikko arg1) {
-                if (arg0.LaatikonAla() == arg1.LaatikonAla()) {
-                    return arg0.korkeus - arg1.korkeus;
-                }
                 return arg0.LaatikonTilavuus() - arg1.LaatikonTilavuus();
             }
         };
@@ -120,113 +123,116 @@ public final class JarjestaLaatikot {
      *
      */
     public void AsetaLaatikkoVAIHEESSA1() {
-        int[] parhainpain = {0, 0};
-        int[] vapaaalue = {0, 0};
-
-        int[] pyoriva = alajarjestys.get(0);
+        //Ensimmäiseksi otetaan suurimman alan omaava laatikko:
+        Laatikko pyoriva = alajarjestys.get(0);
+        Laatikko laatikko = pyoriva;
         alajarjestys.remove(0);
-
         PoistaLaatikkoListasta(tilavuusjarjestys, pyoriva);
-        laatikoitalaitettu++;
 
         //asetetaan laatikko niin, että korkeus on sen lyhyin sivu
         for (int i = 0; i < 3; i++) {
-            if (LaatikonLyhyimmansivunMitta(pyoriva) == pyoriva[2]) {
-                parhainpain = pyoriva;
+            pyoriva.PyoritaLaatikkoa1();
+            if (pyoriva.LaatikonLyhyimmanSivunMitta() == pyoriva.korkeus && pyoriva.leveys <= kontti.leveys && kontti.pituus <= kontti.pituus) {
+                laatikko = pyoriva;
+                break;
             }
-
         }
-        if (tilavuusjarjestys.isEmpty()) {
-            return;
+        for (int i = 0; i < 3; i++) {
+            pyoriva.PyoritaLaatikkoa2();
+            if (pyoriva.LaatikonLyhyimmanSivunMitta() == pyoriva.korkeus && pyoriva.leveys <= kontti.leveys && pyoriva.pituus <= kontti.pituus) {
+                laatikko = pyoriva;
+                break;
+            }
         }
 
-        ArrayList<int[]> templaatikot = tilavuusjarjestys;
-        vapaaalue[0] = kontti[0] - parhainpain[0];
-        vapaaalue[1] = kontti[1] - parhainpain[1];
-        tilavuusjarjestys = VAIHE2(templaatikot, vapaaalue);
+        Laatikko vapaaalue = new Laatikko(kontti.pituus - laatikko.pituus, kontti.leveys - laatikko.leveys, kontti.korkeus);
+        VAIHE2(vapaaalue);
 
     }
 
     /**
      * Asetetaan laatikoita niin kauan, kuin ne loppuvat, tai ylimääräiseen
-     * tilaan ei enään mahdu. Aloitetaan suurimmasta laatikosta ja liikutaan
-     * pienimpään. Katsotaan mahtuuko.
+     * tilaan ei enään mahdu. Aloitetaan suurimmasta laatikosta ja
+     * liikutaanmplaatikot Pidetään kirjaa käsitellyistä laatikoisat.
      *
-     * @param templaatikot Pidetään kirjaa käsitellyistä laatikoisat.
      * @param vapaaalue
-     * @return
      */
-    public ArrayList<int[]> VAIHE2(ArrayList<int[]> templaatikot, int[] vapaaalue) {
+    public void VAIHE2(Laatikko vapaaalue) {
+        //välttääksemme ConcurrentModification-virheen, alustamme temp- muuttujan.
+        ArrayList<Laatikko> temp = tilavuusjarjestys;
 
-        int[] pyoriva = templaatikot.get(0);
+        for (Laatikko laatikko : temp) {
+            for (int i = 0; i < 3; i++) {
 
-        for (int i = 0; i < 3; i++) {
-            pyoriva = PyoritaLaatikkoa1(pyoriva);
-            //Tyhjän tilan sivujen suuruudet:
+                //Jos laatikko menee yksiyhteen, palataan
+                if (laatikko.pituus == vapaaalue.pituus && laatikko.leveys == vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+                    return;
 
-            if (pyoriva[0] == vapaaalue[0] && pyoriva[1] == vapaaalue[1]) {
-                templaatikot.remove(0);
-                PoistaLaatikkoListasta(alajarjestys, pyoriva);
-                laatikoitalaitettu++;
-                return templaatikot;
+                }
+
+                if (laatikko.pituus < vapaaalue.pituus && laatikko.leveys < vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+
+                    //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
+                    Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
+                    Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
+
+                    VAIHE2(vapaaalue1);
+                    VAIHE2(vapaaalue2);
+
+                }
+                laatikko.PyoritaLaatikkoa1();
+
             }
 
-            if (pyoriva[0] < vapaaalue[0] && pyoriva[1] < vapaaalue[1] && pyoriva[2] <= kontti[2]) {
-                templaatikot.remove(0);
-                PoistaLaatikkoListasta(alajarjestys, pyoriva);
-                laatikoitalaitettu++;
-                //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-                int[] vapaaalue1 = {vapaaalue[0], vapaaalue[1] - pyoriva[1]};
-                int[] vapaaalue2 = {vapaaalue[0] - pyoriva[0], pyoriva[1]};
+            for (int i = 0; i < 3; i++) {
 
-                VAIHE2(templaatikot, vapaaalue1);
-                VAIHE2(templaatikot, vapaaalue2);
+                //Jos laatikko menee yksiyhteen, palataan
+                if (laatikko.pituus == vapaaalue.pituus && laatikko.leveys == vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+                    return;
+
+                }
+
+                if (laatikko.pituus < vapaaalue.pituus && laatikko.leveys < vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+
+                    //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
+                    Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
+                    Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
+
+                    VAIHE2(vapaaalue1);
+                    VAIHE2(vapaaalue2);
+
+                }
+                laatikko.PyoritaLaatikkoa1();
 
             }
-
         }
-        pyoriva = templaatikot.get(0);
-
-        for (int i = 0; i < 3; i++) {
-            pyoriva = PyoritaLaatikkoa2(pyoriva);
-            //Tyhjän tilan sivujen suuruudet:
-
-            if (pyoriva[0] == vapaaalue[0] && pyoriva[1] == vapaaalue[1]) {
-                templaatikot.remove(0);
-                PoistaLaatikkoListasta(alajarjestys, pyoriva);
-                laatikoitalaitettu++;
-                return templaatikot;
-            }
-
-            if (pyoriva[0] < vapaaalue[0] && pyoriva[1] < vapaaalue[1] && pyoriva[2] <= kontti[2]) {
-
-                templaatikot.remove(0);
-                PoistaLaatikkoListasta(alajarjestys, pyoriva);
-                laatikoitalaitettu++;
-                int[] vapaaalue1 = {vapaaalue[0], vapaaalue[1] - pyoriva[1]};
-                int[] vapaaalue2 = {vapaaalue[0] - pyoriva[0], pyoriva[1]};
-
-                VAIHE2(templaatikot, vapaaalue1);
-                VAIHE2(templaatikot, vapaaalue2);
-            }
-
-        }
-        return templaatikot;
+        VAIHE1();
     }
 
     /**
-     * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään pitämään kokojärjestyslistat ajantasalla.
+     * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään
+     * pitämään kokojärjestyslistat ajantasalla.
      *
      *
      * @param lista
      * @param poistettava
      */
     public void PoistaLaatikkoListasta(ArrayList<Laatikko> lista, Laatikko poistettava) {
+
         for (Laatikko laatikko : lista) {
-            if (poistettava.equals(laatikko)) {
-                lista.remove(laatikko);
+            if (poistettava.OnkoSama(laatikko)) {
+                poistettava = laatikko;
             }
 
         }
+        lista.remove(poistettava);
     }
 }
