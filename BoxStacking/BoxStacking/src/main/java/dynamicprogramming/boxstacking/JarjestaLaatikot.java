@@ -8,9 +8,8 @@ import java.util.ArrayList;
  */
 public final class JarjestaLaatikot {
 
-    //laatikot annetaan listassa
-    public ArrayList<int[]> laatikot = new ArrayList<>();
-    //kontin annetaan taulukossa leveys, syvyys, korkeus
+
+  
     public int[] kontti = {0, 0, 0};
     public int[] pakkausjarjestys = new int[laatikot.size()];
     public int laatikoitalaitettu = 0;
@@ -61,52 +60,9 @@ public final class JarjestaLaatikot {
 
     }
 
-    /**
-     * Pyörittää laatikkoa niin, että leveys tulee syvyydeksi, syvyys
-     * korkeudeksi, ja korkeus leveydeksi. Yhdessä PyöritäLaatikkoa2 kanssa
-     * saadaan kaikki mahdolliset (6 kpl) asennot.
-     *
-     * @param laatikko Pyöritettevä laatikko.
-     * @return
-     */
-    public int[] PyoritaLaatikkoa1(int[] laatikko) {
-        int[] pyoritetty = {0, 0, 0};
-        pyoritetty[1] = laatikko[0];
-        pyoritetty[2] = laatikko[1];
-        pyoritetty[0] = laatikko[2];
+  
 
-        return pyoritetty;
-
-    }
-
-    /**
-     * Pyörittää laatikkoa niin, että leveyden ja syvyyden paikkaa vaihdetaan
-     * alussa, muuten sama. Yhdessä PyöritäLaatikkoa1 kanssa saadaan kaikki
-     * mahdolliset (6kpl) asennot.
-     *
-     *
-     * @param laatikko Pyöritettävä laatikko.
-     * @return
-     */
-    public int[] PyoritaLaatikkoa2(int[] laatikko) {
-        int[] pyoritetty = {0, 0, 0};
-        pyoritetty[2] = laatikko[0];
-        pyoritetty[1] = laatikko[1];
-        pyoritetty[0] = laatikko[2];
-
-        return pyoritetty;
-
-    }
-
-    /**
-     * Palauttaa lyhyimmän sivun mitan.Tarvitaan määriteltäessä korkeutta.
-     *
-     * @param laatikko
-     * @return
-     */
-    public int LaatikonLyhyimmansivunMitta(int[] laatikko) {
-        return Math.min(Math.min(laatikko[0], laatikko[1]), laatikko[2]);
-    }
+    
 
     /**
      * Laskee millä laatikolla on suurin pinta-ala. Syöttää laatikon indeksin,
