@@ -16,22 +16,18 @@ public class Kontti {
     public int tyhjaatilaa;
     public ArrayList<Laatikko> laatikot;
 
-    public Kontti(int pituus, int leveys, int korkeus) {
-        this.pituus = pituus;
-        this.leveys = leveys;
-        this.korkeus = korkeus;
+    public Kontti() {
+
+        pituus = 0;
+        leveys = 0;
+        korkeus = 0;
+
         this.tyhjaatilaa = 0;
         this.laatikot = new ArrayList<>();
     }
 
-    public void LisaaLaatikko(Laatikko laatikko){
+    public void LisaaLaatikko(Laatikko laatikko) {
         this.laatikot.add(laatikko);
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

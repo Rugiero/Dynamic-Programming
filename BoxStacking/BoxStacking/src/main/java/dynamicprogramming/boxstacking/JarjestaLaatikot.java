@@ -1,6 +1,8 @@
 package dynamicprogramming.boxstacking;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Luokkaan tulee kaikki tarvittavat metodit laatikoiden järjestämiseksi
@@ -8,13 +10,10 @@ import java.util.ArrayList;
  */
 public final class JarjestaLaatikot {
 
-
-  
-    public int[] kontti = {0, 0, 0};
-    public int[] pakkausjarjestys = new int[laatikot.size()];
-    public int laatikoitalaitettu = 0;
-    public ArrayList<int[]> tilavuusjarjestys = new ArrayList<>();
-    public ArrayList<int[]> alajarjestys = new ArrayList<>();
+    public ArrayList<Laatikko> laatikot;
+    public Kontti kontti;
+    public ArrayList<Laatikko> tilavuusjarjestys = new ArrayList<>();
+    public ArrayList<Laatikko> alajarjestys = new ArrayList<>();
 
     /**
      * Luodaan luokka. Laatikot annetaan Array Listinä taulukoita, joihin on
@@ -22,7 +21,7 @@ public final class JarjestaLaatikot {
      *
      * @param laatikot Lista laatikoista
      */
-    public JarjestaLaatikot(ArrayList<int[]> laatikot) {
+    public JarjestaLaatikot(ArrayList<Laatikko> laatikot) {
         this.laatikot = laatikot;
         alajarjestys = JarjestaAlanMukaan(this.laatikot);
         tilavuusjarjestys = JarjestaTilavuudenMukaan(this.laatikot);
@@ -37,32 +36,31 @@ public final class JarjestaLaatikot {
      *
      */
     public void MaaritaKontinMitat() {
+        int pituus = 0;
         int leveys = 0;
-        int syvyys = 0;
-        for (int[] laatikko : laatikot) {
-            for (int i = 0; i < 3; i++) {
-                if (laatikko[i] > leveys) {
-                    leveys = laatikko[i];
+        int temp1;
+        int temp2;
+
+        for (Laatikko laatikko : laatikot) {
+            Laatikko templaatikko = laatikko;
+            temp1 = laatikko.LaatikonPisimmanSivunMitta();
+            temp2 = laatikko.LaatikonToiseksiPisimmanSivunMitta();
+            if (temp1 >= pituus) {
+                pituus = temp1;
+                if (temp2 > leveys) {
+                    leveys = temp2;
                 }
+                continue;
+            }
+            if (temp1 > leveys) {
+                leveys = temp1;
             }
         }
-        //toiseksi pisin:
-        for (int[] laatikko : laatikot) {
-            for (int i = 0; i < 3; i++) {
-                if (laatikko[i] > syvyys && syvyys < leveys) {
-                    syvyys = laatikko[i];
-                }
-            }
-        }
-        this.kontti[0] = leveys;
-        this.kontti[1] = syvyys;
-        this.kontti[2] = 0;
+        kontti.pituus = pituus;
+        kontti.leveys = leveys;
+        kontti.korkeus = 0;
 
     }
-
-  
-
-    
 
     /**
      * Laskee millä laatikolla on suurin pinta-ala. Syöttää laatikon indeksin,
@@ -72,7 +70,7 @@ public final class JarjestaLaatikot {
 
         while (!alajarjestys.isEmpty()) {
 
-            this.kontti[2] = this.kontti[2] + LaatikonLyhyimmansivunMitta(alajarjestys.get(0));
+            kontti.korkeus = kontti.korkeus + alajarjestys.get(0).korkeus;
             AsetaLaatikkoVAIHEESSA1();
         }
         System.out.println("Järjestetty!");
@@ -81,67 +79,38 @@ public final class JarjestaLaatikot {
     /**
      * Järjestää laatikot alan mukaan.
      *
-     * @param laatikot halutut laatikot
-     * @return palauttaa laatikot järjestettynä
      */
-    public ArrayList<int[]> JarjestaAlanMukaan(ArrayList<int[]> laatikot) {
-
-        int suurinala = 0;
-        ArrayList<int[]> apulista = laatikot;
-        int[] suurinalalaatikko = {0, 0, 0};
-        ArrayList<int[]> alajarjestyss = new ArrayList<>();
-
-        while (!apulista.isEmpty()) {
-
-            for (int[] apulista1 : apulista) {
-
-                //jos pinta-alat ovat samat, valitaan laatikko jolla on lyhyin sivun mitta (joka asetetaan korkeudeksi).
-                if ((2 * (apulista1[0] * apulista1[2]) + 2 * (apulista1[0] * apulista1[1]) + 2 * (apulista1[1] * apulista1[2])) == suurinala && LaatikonLyhyimmansivunMitta(apulista1) < LaatikonLyhyimmansivunMitta(suurinalalaatikko)) {
-
-                    suurinalalaatikko = apulista1;
-                    suurinala = (2 * (apulista1[0] * apulista1[2]) + 2 * (apulista1[0] * apulista1[1]) + 2 * (apulista1[1] * apulista1[2]));
-
+    public void JarjestaAlanMukaan() {
+        alajarjestys = laatikot;
+        Comparator<Laatikko> Alajarjestys = new Comparator<Laatikko>() {
+            @Override
+            public int compare(Laatikko arg0, Laatikko arg1) {
+                if (arg0.LaatikonAla() == arg1.LaatikonAla()) {
+                    return arg0.korkeus - arg1.korkeus;
                 }
-                //jos pinta-ala on suurempi, valitaan uusi indeksi
-                if (2 * (apulista1[0] * apulista1[2]) + 2 * (apulista1[0] * apulista1[1]) + 2 * (apulista1[1] * apulista1[2]) > suurinala) {
-                    suurinala = (2 * apulista1[0] * apulista1[2]) + 2 * (apulista1[0] * apulista1[1]) + 2 * (apulista1[1] * apulista1[2]);
-                    suurinalalaatikko = apulista1;
-                }
+                return arg0.LaatikonAla() - arg1.LaatikonAla();
             }
-            alajarjestyss.add(suurinalalaatikko);
-            apulista.remove(suurinalalaatikko);
-
-        }
-
-        return alajarjestyss;
+        };
+        Collections.sort(alajarjestys, Alajarjestys);
 
     }
 
     /**
      * Jarjestää laatikot tilavuusjärjestykseen
      *
-     * @param laatikot
-     * @return
-     * @para
      */
-    public ArrayList<int[]> JarjestaTilavuudenMukaan(ArrayList<int[]> laatikot) {
-        ArrayList<int[]> jarjestys = new ArrayList<>();
-        int suurintilavuus = 0;
-        ArrayList<int[]> apulista = laatikot;
-        int[] suurintilavuuslaatikko = {0, 0, 0};
-
-        while (!apulista.isEmpty()) {
-            for (int[] apulista1 : apulista) {
-                if (apulista.get(0)[0] * apulista.get(0)[1] * apulista.get(0)[2] > suurintilavuus) {
-                    suurintilavuus = apulista.get(0)[0] * apulista.get(0)[1] * apulista.get(0)[2];
-                    suurintilavuuslaatikko = apulista.get(0);
+    public void JarjestaTilavuudenMukaan() {
+        tilavuusjarjestys = laatikot;
+        Comparator<Laatikko> Tilavuusjarjestys = new Comparator<Laatikko>() {
+            @Override
+            public int compare(Laatikko arg0, Laatikko arg1) {
+                if (arg0.LaatikonAla() == arg1.LaatikonAla()) {
+                    return arg0.korkeus - arg1.korkeus;
                 }
-
+                return arg0.LaatikonTilavuus() - arg1.LaatikonTilavuus();
             }
-            jarjestys.add(suurintilavuuslaatikko);
-            apulista.remove(suurintilavuuslaatikko);
-        }
-        return jarjestys;
+        };
+        Collections.sort(tilavuusjarjestys, Tilavuusjarjestys);
 
     }
 
@@ -156,6 +125,7 @@ public final class JarjestaLaatikot {
 
         int[] pyoriva = alajarjestys.get(0);
         alajarjestys.remove(0);
+
         PoistaLaatikkoListasta(tilavuusjarjestys, pyoriva);
         laatikoitalaitettu++;
 
@@ -245,26 +215,18 @@ public final class JarjestaLaatikot {
     }
 
     /**
-     * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä.
+     * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään pitämään kokojärjestyslistat ajantasalla.
      *
      *
      * @param lista
      * @param poistettava
      */
-    public void PoistaLaatikkoListasta(ArrayList<int[]> lista, int[] poistettava) {
-        int[] pyoriva = poistettava;
-        for (int i = 0; i < 3; i++) {
-            pyoriva = PyoritaLaatikkoa1(pyoriva);
-            if (lista.contains(pyoriva)) {
-                lista.remove(pyoriva);
+    public void PoistaLaatikkoListasta(ArrayList<Laatikko> lista, Laatikko poistettava) {
+        for (Laatikko laatikko : lista) {
+            if (poistettava.equals(laatikko)) {
+                lista.remove(laatikko);
             }
-        }
-        for (int i = 0; i < 3; i++) {
-            pyoriva = PyoritaLaatikkoa2(pyoriva);
-            if (lista.contains(pyoriva)) {
-                lista.remove(pyoriva);
-            }
-        }
 
+        }
     }
 }
