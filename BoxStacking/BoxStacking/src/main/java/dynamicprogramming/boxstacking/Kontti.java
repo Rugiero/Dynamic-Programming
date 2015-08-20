@@ -8,38 +8,32 @@ import java.util.ArrayList;
  *
  * @author iangervu@cs
  */
-public class Kontti {
+public class Kontti extends Laatikko {
 
-    public int pituus;
-    public int leveys;
-    public int korkeus;
-    public int tyhjaatilaa;
-    public ArrayList<Laatikko> laatikot;
 
-    public Kontti() {
+    private int tyhjaatilaa;
+    private final ArrayList<Laatikko> laatikot;
 
-        pituus = 0;
-        leveys = 0;
-        korkeus = 0;
 
-        this.tyhjaatilaa = 0;
-        this.laatikot = new ArrayList<>();
+    public Kontti(int pituus, int leveys, int korkeus) {
+        super(pituus, leveys, korkeus);
+        laatikot = new ArrayList<>();
     }
-
-    public void LisaaLaatikko(Laatikko laatikko) {
-        this.laatikot.add(laatikko);
+    public int LaskeTyhjaTila() {
+        int laatikoidentilavuus = 0;
+        for(Laatikko laatikko:laatikot) {
+            laatikoidentilavuus += laatikko.LaatikonTilavuus();
+        }
+ 
+        return LaatikonTilavuus() - laatikoidentilavuus;
     }
+    public void lisaaLaatikko(Laatikko laatikko) {
+        
+        laatikot.add(laatikko);
+    }
+   
+    
 
-    /**
-     * Määrittää kontin mitat, ja palauttaa Laatikko-olion. Pisin sivu kaikista
-     * laatikoista tulee kontin pituudeksi, toiseksi pisin leveydeksi.
-     * Korkeudeksi määritellään aluksi 0.
-     *
-     *
-     * @author iangervu@cs
-     * @param laatikot lista laatikoista
-     * @return
-     */
-  
+
 
 }
