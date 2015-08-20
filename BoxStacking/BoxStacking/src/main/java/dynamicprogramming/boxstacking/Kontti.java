@@ -30,4 +30,16 @@ public class Kontti {
         this.laatikot.add(laatikko);
     }
 
+    /**
+     * Määrittää kontin mitat, ja palauttaa Laatikko-olion. Pisin sivu kaikista
+     * laatikoista tulee kontin pituudeksi, toiseksi pisin leveydeksi.
+     * Korkeudeksi määritellään aluksi 0.
+     *
+     *
+     * @author iangervu@cs
+     * @param laatikot lista laatikoista
+     * @return
+     */
+  
+
 }

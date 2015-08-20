@@ -5,7 +5,6 @@
  */
 package dynamicprogramming.boxstacking;
 
-import static dynamicprogramming.boxstacking.Main.laatikot;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author ilari
  */
-public class JarjestaLaatikkoTest {
+public class KonttiTest {
     
-    public JarjestaLaatikkoTest() {
+    public KonttiTest() {
     }
     
     @BeforeClass
@@ -34,9 +33,15 @@ public class JarjestaLaatikkoTest {
     public void setUp() {
     }
     
-  @Test
-public void Lisaalaatikko() {
-  
-}
-     
+    @Test 
+    
+    @After
+    public void tearDown() {
+    }
+
+    // TODO add test methods here.
+    // The methods must be annotated with annotation @Test. For example:
+    //
+    // @Test
+    // public void hello() {}
 }

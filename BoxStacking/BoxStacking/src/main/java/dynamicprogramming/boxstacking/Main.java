@@ -26,7 +26,7 @@ public class Main {
 
         }
 
-        JarjestaLaatikot jarjestalaatikot = new JarjestaLaatikot(laatikot);
+        PakkaaLaatikot jarjestalaatikot = new PakkaaLaatikot(laatikot);
         jarjestalaatikot.Aloita();
     }
 
