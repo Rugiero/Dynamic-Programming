@@ -10,8 +10,8 @@ import java.util.Iterator;
 public final class PakkaaLaatikot {
 
     public Kontti kontti;
-    public ArrayList<Laatikko> tilavuusjarjestys = new ArrayList<>();
-    public ArrayList<Laatikko> alajarjestys = new ArrayList<>();
+    private ArrayList<Laatikko> tilavuusjarjestys = new ArrayList<>();
+    private ArrayList<Laatikko> alajarjestys = new ArrayList<>();
 
     /**
      * Luodaan luokka. Laatikot annetaan Array Listinä taulukoita, joihin on
@@ -179,8 +179,9 @@ public final class PakkaaLaatikot {
             }
         }
         kontti.lisaaLaatikko(laatikko);
-        Laatikko vapaaalue1 = new Laatikko(kontti.pituus, kontti.pituus - laatikko.pituus, vapaaaluekorkeus);
-        Laatikko vapaaalue2 = new Laatikko(kontti.pituus - laatikko.pituus, laatikko.leveys, vapaaaluekorkeus);
+        Laatikko vapaaalue1 = new Laatikko(kontti.pituus, kontti.leveys - laatikko.leveys, vapaaaluekorkeus);
+        Laatikko vapaaalue2 = new Laatikko(kontti.pituus - laatikko.pituus, kontti.leveys, vapaaaluekorkeus);
+
         VAIHE2(vapaaalue1, vapaaalue2);
 
     }
@@ -194,16 +195,25 @@ public final class PakkaaLaatikot {
      * @param vapaaalue2
      */
     public void VAIHE2(Laatikko vapaaalue1, Laatikko vapaaalue2) {
+        System.out.println("sisään" + vapaaalue1.leveys + " " + vapaaalue1.pituus + " " + vapaaalue2.leveys + "  " + vapaaalue2.pituus);
 
-        Iterator<Laatikko> iterator = tilavuusjarjestys.iterator();
-        while (iterator.hasNext()) {
-            Laatikko laatikko = iterator.next();
+        outerloop:
+        for (int j = 0; j < Integer.MAX_VALUE; j++) {
+            System.out.println("j:" + j);
+
+            if (j >= tilavuusjarjestys.size()) {
+                break;
+            }
+
+            Laatikko laatikko = tilavuusjarjestys.get(j);
+
 //liian pientä laatikkoa on turha yrittää asettaa mitenkään päin:
             if (laatikko.LaatikonTilavuus() > vapaaalue1.LaatikonTilavuus() && laatikko.LaatikonTilavuus() > vapaaalue2.LaatikonTilavuus()) {
                 continue;
             }
 
             for (int i = 0; i < 6; i++) {
+
                 if (i == 2) {
                     laatikko.KaannaLaatikko90astetta();
                 }
@@ -212,31 +222,50 @@ public final class PakkaaLaatikot {
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-                    Laatikko vapaaalue11 = new Laatikko(vapaaalue1.pituus, vapaaalue1.pituus - laatikko.pituus, vapaaalue1.korkeus);
-                    Laatikko vapaaalue22 = new Laatikko(vapaaalue1.pituus - laatikko.pituus, laatikko.leveys, vapaaalue1.korkeus);
-                    iterator.remove();
+                    Laatikko vapaaalue11 = new Laatikko(vapaaalue1.pituus, vapaaalue1.leveys - laatikko.leveys, vapaaalue1.korkeus);
+                    Laatikko vapaaalue22 = new Laatikko(vapaaalue1.pituus - laatikko.pituus, vapaaalue1.leveys, vapaaalue1.korkeus);
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+
+                    System.out.println("yksi" + vapaaalue1.leveys + vapaaalue1.pituus + vapaaalue2.leveys + vapaaalue2.pituus);
+                    System.out.println(vapaaalue11.leveys + " " + vapaaalue11.pituus + " " + vapaaalue22.leveys + "  " + vapaaalue22.pituus);
                     VAIHE2(vapaaalue11, vapaaalue22);
+                    //Alueesta poistetaan vapaaalue1 kanssa leikkaava alue:
+                    vapaaalue2 = new Laatikko(vapaaalue2.pituus, vapaaalue2.leveys - vapaaalue1.leveys, vapaaalue1.korkeus);
                     //alue on rekursion jälkeen täytetty mahdollisimman täyteen:
-                    
-                    return;
+                    vapaaalue1 = new Laatikko(0, 0, 0);
+                    j--;
+                    System.out.println("j:" + j);
+                    continue outerloop;
+
                 }
                 if (laatikko.pituus <= vapaaalue2.pituus && laatikko.leveys <= vapaaalue2.leveys && laatikko.korkeus <= vapaaalue2.korkeus) {
                     PoistaLaatikkoListasta(alajarjestys, laatikko);
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-                    Laatikko vapaaalue11 = new Laatikko(vapaaalue2.pituus, vapaaalue2.pituus - laatikko.pituus, vapaaalue2.korkeus);
-                    Laatikko vapaaalue22 = new Laatikko(vapaaalue2.pituus - laatikko.pituus, laatikko.leveys, vapaaalue2.korkeus);
-                    iterator.remove();
+                    Laatikko vapaaalue11 = new Laatikko(vapaaalue2.pituus, vapaaalue2.leveys - laatikko.leveys, vapaaalue2.korkeus);
+                    Laatikko vapaaalue22 = new Laatikko(vapaaalue2.pituus - laatikko.pituus, vapaaalue2.leveys, vapaaalue2.korkeus);
+                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+
+                    System.out.println("kaksi" + vapaaalue1.leveys + vapaaalue1.pituus + vapaaalue2.leveys + vapaaalue2.pituus);
+                    System.out.println("kaksikakkaa" + vapaaalue11.leveys + " " + vapaaalue11.pituus + " " + vapaaalue22.leveys + "  " + vapaaalue22.pituus);
                     VAIHE2(vapaaalue11, vapaaalue22);
-                    //alue on rekursion jälkeen täytetty mahdollisimman täyteen:
-                 
-                    return;
+                    //Alueesta poistetaan vapaaalue2 kanssa leikkaava alue:
+                    vapaaalue1 = new Laatikko(vapaaalue1.pituus - vapaaalue2.pituus, vapaaalue1.leveys, vapaaalue1.korkeus);
+                    //Alue on rekursion jälkeen täytetty mahdollisimman täyteen:
+                    vapaaalue2 = new Laatikko(0, 0, 0);
+                    j--;
+                    System.out.println("j:" + j);
+                    continue outerloop;
+
                 }
+                System.out.println("rullatirullaa");
                 laatikko.PyoritaLaatikkoa();
+
             }
 
-        } 
+        }
+        System.out.println("pois");
 
     }
 
@@ -261,7 +290,6 @@ public final class PakkaaLaatikot {
     /**
      * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään
      * pitämään kokojärjestyslistat ajantasalla.
-     *
      *
      * @param lista
      * @param poistettava
