@@ -236,7 +236,7 @@ public final class PakkaaLaatikot {
                 laatikko.PyoritaLaatikkoa();
             }
 
-        } System.out.println("negative!");
+        } 
 
     }
 
