@@ -1,9 +1,6 @@
 package dynamicprogramming.boxstacking;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import static java.util.Collections.list;
-import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -159,7 +156,7 @@ public final class PakkaaLaatikot {
      */
     public void AsetaLaatikkoVAIHEESSA1() {
         //Ensimmäiseksi otetaan suurimman alan omaava laatikko:
-      int  vapaaaluekorkeus = alajarjestys.get(0).LaatikonLyhyimmanSivunMitta();
+        int vapaaaluekorkeus = alajarjestys.get(0).LaatikonLyhyimmanSivunMitta();
         Laatikko pyoriva = alajarjestys.get(0);
         Laatikko laatikko = pyoriva;
         alajarjestys.remove(0);
@@ -167,14 +164,15 @@ public final class PakkaaLaatikot {
 
         //asetetaan laatikko niin, että korkeus on sen lyhyin sivu
         for (int i = 0; i < 3; i++) {
-            pyoriva.PyoritaLaatikkoa1();
+            pyoriva.PyoritaLaatikkoa();
             if (pyoriva.LaatikonLyhyimmanSivunMitta() == pyoriva.korkeus && pyoriva.leveys <= kontti.leveys && kontti.pituus <= kontti.pituus) {
                 laatikko = pyoriva;
                 break;
             }
         }
+        pyoriva.KaannaLaatikko90astetta();
         for (int i = 0; i < 3; i++) {
-            pyoriva.PyoritaLaatikkoa2();
+            pyoriva.PyoritaLaatikkoa();
             if (pyoriva.LaatikonLyhyimmanSivunMitta() == pyoriva.korkeus && pyoriva.leveys <= kontti.leveys && pyoriva.pituus <= kontti.pituus) {
                 laatikko = pyoriva;
                 break;
@@ -183,8 +181,7 @@ public final class PakkaaLaatikot {
         kontti.lisaaLaatikko(laatikko);
         Laatikko vapaaalue1 = new Laatikko(kontti.pituus, kontti.pituus - laatikko.pituus, vapaaaluekorkeus);
         Laatikko vapaaalue2 = new Laatikko(kontti.pituus - laatikko.pituus, laatikko.leveys, vapaaaluekorkeus);
-        VAIHE2(vapaaalue1);
-        VAIHE2(vapaaalue2);
+        VAIHE2(vapaaalue1, vapaaalue2);
 
     }
 
@@ -193,81 +190,74 @@ public final class PakkaaLaatikot {
      * tilaan ei enään mahdu. Aloitetaan suurimmasta laatikosta. Pidetään kirjaa
      * käsitellyistä laatikoista.
      *
-     * @param vapaaalue Alue, mihin laatikoita voi yrittää mahduttaa
+     * @param vapaaalue1
+     * @param vapaaalue2
      */
-    public void VAIHE2(Laatikko vapaaalue) {
-     
+    public void VAIHE2(Laatikko vapaaalue1, Laatikko vapaaalue2) {
+
         Iterator<Laatikko> iterator = tilavuusjarjestys.iterator();
         while (iterator.hasNext()) {
             Laatikko laatikko = iterator.next();
 //liian pientä laatikkoa on turha yrittää asettaa mitenkään päin:
-            if (laatikko.LaatikonTilavuus() > vapaaalue.LaatikonTilavuus()) {
+            if (laatikko.LaatikonTilavuus() > vapaaalue1.LaatikonTilavuus() && laatikko.LaatikonTilavuus() > vapaaalue2.LaatikonTilavuus()) {
                 continue;
             }
-            for (int i = 0; i < 3; i++) {
 
-                //Jos laatikko menee yksiyhteen, palataan
-                if (laatikko.pituus == vapaaalue.pituus && laatikko.leveys == vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
-
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
-                    PoistaLaatikkoListasta(alajarjestys, laatikko);
-                    kontti.lisaaLaatikko(laatikko);
-                    return;
-
+            for (int i = 0; i < 6; i++) {
+                if (i == 2) {
+                    laatikko.KaannaLaatikko90astetta();
                 }
-
-                if (laatikko.pituus <= vapaaalue.pituus && laatikko.leveys <= vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
-
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                if (laatikko.pituus <= vapaaalue1.pituus && laatikko.leveys <= vapaaalue1.leveys && laatikko.korkeus <= vapaaalue1.korkeus) {
                     PoistaLaatikkoListasta(alajarjestys, laatikko);
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-                    Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
-                    Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
-                    VAIHE2(vapaaalue1);
-                    VAIHE2(vapaaalue2);
+                    Laatikko vapaaalue11 = new Laatikko(vapaaalue1.pituus, vapaaalue1.pituus - laatikko.pituus, vapaaalue1.korkeus);
+                    Laatikko vapaaalue22 = new Laatikko(vapaaalue1.pituus - laatikko.pituus, laatikko.leveys, vapaaalue1.korkeus);
+                    iterator.remove();
+                    VAIHE2(vapaaalue11, vapaaalue22);
+                    //alue on rekursion jälkeen täytetty mahdollisimman täyteen:
+                    
                     return;
-
                 }
-                laatikko.PyoritaLaatikkoa1();
-
-            }
-
-            for (int i = 0; i < 3; i++) {
-
-                //Jos laatikko menee yksiyhteen, palataan
-                if (laatikko.pituus == vapaaalue.pituus && laatikko.leveys == vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
-
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
-                    PoistaLaatikkoListasta(alajarjestys, laatikko);
-                    kontti.lisaaLaatikko(laatikko);
-                    return;
-
-                }
-
-                if (laatikko.pituus <= vapaaalue.pituus && laatikko.leveys <= vapaaalue.leveys && laatikko.korkeus <= vapaaalue.korkeus) {
-
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                if (laatikko.pituus <= vapaaalue2.pituus && laatikko.leveys <= vapaaalue2.leveys && laatikko.korkeus <= vapaaalue2.korkeus) {
                     PoistaLaatikkoListasta(alajarjestys, laatikko);
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-                    Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
-                    Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
-
-                    VAIHE2(vapaaalue1);
-                    VAIHE2(vapaaalue2);
+                    Laatikko vapaaalue11 = new Laatikko(vapaaalue2.pituus, vapaaalue2.pituus - laatikko.pituus, vapaaalue2.korkeus);
+                    Laatikko vapaaalue22 = new Laatikko(vapaaalue2.pituus - laatikko.pituus, laatikko.leveys, vapaaalue2.korkeus);
+                    iterator.remove();
+                    VAIHE2(vapaaalue11, vapaaalue22);
+                    //alue on rekursion jälkeen täytetty mahdollisimman täyteen:
+                 
                     return;
-
                 }
-                laatikko.PyoritaLaatikkoa2();
-
+                laatikko.PyoritaLaatikkoa();
             }
-        }
+
+        } System.out.println("negative!");
 
     }
 
+    /**
+     * Asettaa laatikon vapaalle alueelle.
+     *
+     * @param laatikko
+     * @param vapaaalue
+     */
+//    public void AsetaLaatikko(Laatikko laatikko, Laatikko vapaaalue) {
+//
+//        PoistaLaatikkoListasta(alajarjestys, laatikko);
+//        kontti.lisaaLaatikko(laatikko);
+//
+//        //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
+//        Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
+//        Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
+//
+//        VAIHE2(vapaaalue1, vapaaalue2);
+//
+//    }
     /**
      * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään
      * pitämään kokojärjestyslistat ajantasalla.
@@ -281,6 +271,7 @@ public final class PakkaaLaatikot {
         for (Laatikko laatikko : lista) {
             if (poistettava.OnkoSama(laatikko)) {
                 poistettava = laatikko;
+
             }
 
         }

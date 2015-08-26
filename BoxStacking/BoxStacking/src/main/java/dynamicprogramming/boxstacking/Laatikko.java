@@ -24,7 +24,7 @@ public class Laatikko {
      *
      * @author iangervu@cs
      */
-    public void PyoritaLaatikkoa1() {
+    public void PyoritaLaatikkoa() {
         this.pituus = this.leveys;
         this.leveys = this.korkeus;
         this.korkeus = this.pituus;
@@ -39,9 +39,9 @@ public class Laatikko {
      *
      * @author iangervu@cs
      */
-    public void PyoritaLaatikkoa2() {
-        this.pituus = this.korkeus;
-        this.korkeus = this.pituus;
+    public void KaannaLaatikko90astetta() {
+        this.pituus = this.leveys;
+        this.leveys = this.pituus;
 
     }
 
