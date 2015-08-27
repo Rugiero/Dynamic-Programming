@@ -1,5 +1,6 @@
 package dynamicprogramming.boxstacking;
 
+import dynamicprogramming.boxstacking.tietorakenteet.LaatikkoLista;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,8 +11,8 @@ import java.util.Iterator;
 public final class PakkaaLaatikot {
 
     public Kontti kontti;
-    private ArrayList<Laatikko> tilavuusjarjestys = new ArrayList<>();
-    private ArrayList<Laatikko> alajarjestys = new ArrayList<>();
+    private final LaatikkoLista tilavuusjarjestys = new LaatikkoLista();
+    private final LaatikkoLista alajarjestys = new LaatikkoLista();
 
     /**
      * Luodaan luokka. Laatikot annetaan Array Listinä taulukoita, joihin on
@@ -19,7 +20,7 @@ public final class PakkaaLaatikot {
      *
      * @param laatikot
      */
-    public PakkaaLaatikot(ArrayList<Laatikko> laatikot) {
+    public PakkaaLaatikot(LaatikkoLista laatikot) {
         JarjestaLaatikot(laatikot);
         kontti = new Kontti(0, 0, 0);
 
@@ -32,48 +33,70 @@ public final class PakkaaLaatikot {
      *
      * @param laatikot
      */
-    public void JarjestaLaatikot(ArrayList<Laatikko> laatikot) {
-        for (Laatikko laatikko : laatikot) {
+    public void JarjestaLaatikot(LaatikkoLista laatikot) {
+        for (int k = 0; k < Integer.MAX_VALUE; k++) {
 
-            if (tilavuusjarjestys.isEmpty()) {
-                tilavuusjarjestys.add(laatikko);
-                alajarjestys.add(laatikko);
+            if (k >= laatikot.koko()) {
+            
+                break;
+            }
+            Laatikko laatikko = laatikot.poimi(k);
+
+            if (tilavuusjarjestys.koko() == 0) {
+                tilavuusjarjestys.lisaa(laatikko);
+                alajarjestys.lisaa(laatikko);
                 continue;
             }
-            Iterator<Laatikko> iterator = tilavuusjarjestys.iterator();
-            while (true) {
-                Laatikko laatikko1 = iterator.next();
-                if (laatikko.LaatikonTilavuus() >= laatikko1.LaatikonTilavuus()) {
-                    tilavuusjarjestys.add(tilavuusjarjestys.indexOf(laatikko1), laatikko);
+
+            for (int i = 0; i <= tilavuusjarjestys.koko(); i++) {
+
+                if (i == tilavuusjarjestys.koko()) {
+                    tilavuusjarjestys.lisaa(laatikko);
+//                    System.out.println("ulos" + i);
+
                     break;
                 }
-                if (!iterator.hasNext()) {
-                    tilavuusjarjestys.add(laatikko);
 
+                Laatikko laatikko1 = tilavuusjarjestys.poimi(i);
+//                   System.out.println(tilavuusjarjestys.koko());
+//                   System.out.println(i);
+//                   System.out.println(tilavuusjarjestys.poimi(i));
+               
+                if (laatikko.LaatikonTilavuus() >= laatikko1.LaatikonTilavuus()) {
+                    
+                    tilavuusjarjestys.lisaaIndeksiin(i, laatikko);
+               
                     break;
                 }
 
             }
-            iterator = alajarjestys.iterator();
-            while (true) {
-                Laatikko laatikko1 = iterator.next();
+            for (int j = 0; j <= alajarjestys.koko(); j++) {
+
+                if (j == alajarjestys.koko()) {
+                    alajarjestys.lisaa(laatikko);
+//                    System.out.println("ulos" + j);
+
+                    break;
+                }
+
+                Laatikko laatikko1 = alajarjestys.poimi(j);
+
                 if (laatikko.LaatikonAla() >= laatikko1.LaatikonAla()) {
                     if (laatikko.LaatikonTilavuus() == laatikko1.LaatikonTilavuus()) {
                         if (laatikko.LaatikonLyhyimmanSivunMitta() < laatikko1.LaatikonLyhyimmanSivunMitta()) {
-                            alajarjestys.add(alajarjestys.indexOf(laatikko1), laatikko);
+                            alajarjestys.lisaaIndeksiin(j, laatikko);
+//                            System.out.println("alaanuusilaatikko");
                             break;
                         } else {
-                            alajarjestys.add(alajarjestys.indexOf(laatikko1) + 1, laatikko);
+                            alajarjestys.lisaaIndeksiin(j + 1, laatikko);
+//                            System.out.println("alaanuusilaatikko");
                             break;
                         }
                     } else {
-                        alajarjestys.add(alajarjestys.indexOf(laatikko1), laatikko);
+                        alajarjestys.lisaaIndeksiin(j, laatikko);
+//                        System.out.println("alaanuusilaatikko");
                         break;
                     }
-                }
-                if (!iterator.hasNext()) {
-                    alajarjestys.add(laatikko);
-                    break;
                 }
 
             }
@@ -83,14 +106,16 @@ public final class PakkaaLaatikot {
 
     public void Aloita() {
 
-        for (Laatikko laatikko : alajarjestys) {
-            System.out.println(laatikko.LaatikonAla());
+        for (int i = 0; i < alajarjestys.koko(); i++) {
+
+            System.out.println(alajarjestys.poimi(i).LaatikonAla());
         }
         System.out.println("______");
-        for (Laatikko laatikko : tilavuusjarjestys) {
-            System.out.println(laatikko.LaatikonTilavuus());
+        for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
+            System.out.println(tilavuusjarjestys.poimi(i).LaatikonTilavuus());
         }
         MaaritaKontinMitat();
+
         VAIHE1();
         System.out.println("kontin leveys" + kontti.leveys);
         System.out.println("kontin korkeus" + kontti.korkeus);
@@ -111,21 +136,21 @@ public final class PakkaaLaatikot {
         int pituus = 0;
         int leveys = 0;
 
-        for (Laatikko laatikko : tilavuusjarjestys) {
+        for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
 
-            if (laatikko.LaatikonPisimmanSivunMitta() >= pituus) {
+            if (tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta() >= pituus) {
                 leveys = pituus;
-                pituus = laatikko.LaatikonPisimmanSivunMitta();
+                pituus = tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta();
 
-                if (laatikko.LaatikonToiseksiPisimmanSivunMitta() > leveys) {
-                    leveys = laatikko.LaatikonToiseksiPisimmanSivunMitta();
+                if (tilavuusjarjestys.poimi(i).LaatikonToiseksiPisimmanSivunMitta() > leveys) {
+                    leveys = tilavuusjarjestys.poimi(i).LaatikonToiseksiPisimmanSivunMitta();
                     continue;
                 }
                 continue;
 
             }
-            if (laatikko.LaatikonPisimmanSivunMitta() > leveys) {
-                leveys = laatikko.LaatikonPisimmanSivunMitta();
+            if (tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta() > leveys) {
+                leveys = tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta();
             }
 
         }
@@ -141,9 +166,9 @@ public final class PakkaaLaatikot {
      */
     public void VAIHE1() {
 
-        while (!alajarjestys.isEmpty()) {
+        while (alajarjestys.koko() != 0) {
 
-            kontti.korkeus = kontti.korkeus + alajarjestys.get(0).LaatikonLyhyimmanSivunMitta();
+            kontti.korkeus = kontti.korkeus + alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
             AsetaLaatikkoVAIHEESSA1();
         }
 
@@ -156,10 +181,10 @@ public final class PakkaaLaatikot {
      */
     public void AsetaLaatikkoVAIHEESSA1() {
         //Ensimmäiseksi otetaan suurimman alan omaava laatikko:
-        int vapaaaluekorkeus = alajarjestys.get(0).LaatikonLyhyimmanSivunMitta();
-        Laatikko pyoriva = alajarjestys.get(0);
+        int vapaaaluekorkeus = alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
+        Laatikko pyoriva = alajarjestys.poimi(0);
         Laatikko laatikko = pyoriva;
-        alajarjestys.remove(0);
+        alajarjestys.poista(0);
         PoistaLaatikkoListasta(tilavuusjarjestys, pyoriva);
 
         //asetetaan laatikko niin, että korkeus on sen lyhyin sivu
@@ -201,11 +226,11 @@ public final class PakkaaLaatikot {
         for (int j = 0; j < Integer.MAX_VALUE; j++) {
             System.out.println("j:" + j);
 
-            if (j >= tilavuusjarjestys.size()) {
+            if (j >= tilavuusjarjestys.koko()) {
                 break;
             }
 
-            Laatikko laatikko = tilavuusjarjestys.get(j);
+            Laatikko laatikko = tilavuusjarjestys.poimi(j);
 
 //liian pientä laatikkoa on turha yrittää asettaa mitenkään päin:
             if (laatikko.LaatikonTilavuus() > vapaaalue1.LaatikonTilavuus() && laatikko.LaatikonTilavuus() > vapaaalue2.LaatikonTilavuus()) {
@@ -294,15 +319,16 @@ public final class PakkaaLaatikot {
      * @param lista
      * @param poistettava
      */
-    public void PoistaLaatikkoListasta(ArrayList<Laatikko> lista, Laatikko poistettava) {
-
-        for (Laatikko laatikko : lista) {
-            if (poistettava.OnkoSama(laatikko)) {
-                poistettava = laatikko;
+    public void PoistaLaatikkoListasta(LaatikkoLista lista, Laatikko poistettava) {
+        int poistoindeksi = 0;
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            if (poistettava.OnkoSama(lista.poimi(i))) {
+                poistoindeksi = i;
+                break;
 
             }
 
         }
-        lista.remove(poistettava);
+        lista.poista(poistoindeksi);
     }
 }

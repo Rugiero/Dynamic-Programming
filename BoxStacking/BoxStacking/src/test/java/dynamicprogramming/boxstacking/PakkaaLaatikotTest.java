@@ -6,6 +6,7 @@
 package dynamicprogramming.boxstacking;
 
 import static dynamicprogramming.boxstacking.Main.laatikot;
+import dynamicprogramming.boxstacking.tietorakenteet.LaatikkoLista;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,11 +39,11 @@ public class PakkaaLaatikotTest {
     @Test
     public void KontinMitat() {
 
-        ArrayList<Laatikko> laatikot = new ArrayList<>();
-        laatikot.add(new Laatikko(1, 1, 1));
-        laatikot.add(new Laatikko(2, 2, 1));
-        laatikot.add(new Laatikko(1, 1, 3));
-        laatikot.add(new Laatikko(1, 4, 1));
+        LaatikkoLista laatikot = new LaatikkoLista();
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(2, 2, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 3));
+        laatikot.lisaa(new Laatikko(1, 4, 1));
 
         PakkaaLaatikot olio = new PakkaaLaatikot(laatikot);
         olio.MaaritaKontinMitat();
@@ -50,11 +51,11 @@ public class PakkaaLaatikotTest {
         assertEquals(4, olio.kontti.pituus);
         assertEquals(3, olio.kontti.leveys);
 
-        laatikot = new ArrayList<>();
-        laatikot.add(new Laatikko(1, 1, 1));
-        laatikot.add(new Laatikko(2, 3, 1));
-        laatikot.add(new Laatikko(1, 1, 3));
-        laatikot.add(new Laatikko(1, 1, 1));
+        laatikot = new LaatikkoLista();
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(2, 3, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 3));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
 
         olio = new PakkaaLaatikot(laatikot);
         olio.MaaritaKontinMitat();

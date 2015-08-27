@@ -1,0 +1,4 @@
+Ongelmia oli vielä rekursion ja concurrent modification exceptionin kanssa. Muutin looppaukset perustumaan for-looppiin, niin enään ei virheilmoituksia tule. Toin oman lista tietorakenteen 'LaatikkoLista' projektiin. Tämän kanssa on ongelmia, sillä sain ohjelmani rikki null-pointerien takia. Docsiin lisäsin graafista esitystä rekursiosta. Oli tarkoitus saada myös suoritusaikatestejä aikaiseksi, mutta ilmaantui ylimääräistä säätöä eikä ehtinyt.
+Ohjelma toimi ArrayListin kanssa oikeanlaisesti. Tarkemmin testaamalla selviää vielä toimiiko se halutulla tavalla yksinkertaisissa tilanteissa.
+Jatkoa ajatellen jos ehtii voisin luoda oman luokan, mikä järjestää annetun listan annetun ominaisuuden mukaan.  Samoin LaatikkoListasta voisi tehdä abstraktimman luokan.
+"PakkaaLaatikot"-luokkaa voisin ainakin jaotella ja siistiä vielä kokonaisuutta. Kunhan saa nuo tämänhetkiset null-pointterit paikallistettua.
