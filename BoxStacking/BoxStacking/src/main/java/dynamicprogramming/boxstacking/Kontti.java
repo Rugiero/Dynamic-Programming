@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class Kontti extends Laatikko {
 
 
-    private int tyhjaatilaa;
-    private final ArrayList<Laatikko> laatikot;
+
+    public final ArrayList<Laatikko> laatikot;
 
 
     public Kontti(int pituus, int leveys, int korkeus) {
@@ -25,7 +25,7 @@ public class Kontti extends Laatikko {
             laatikoidentilavuus += laatikko.LaatikonTilavuus();
         }
  
-        return LaatikonTilavuus() - laatikoidentilavuus;
+        return this.LaatikonTilavuus() - laatikoidentilavuus;
     }
     public void lisaaLaatikko(Laatikko laatikko) {
         

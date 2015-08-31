@@ -39,7 +39,7 @@ public class LaatikkoLista {
     public void poista(int index) {
 
         for (int j = index; j < num - 1; j++) {
-            lista[index] = lista[index + 1];
+            lista[j] = lista[j + 1];
         }
         lista[num - 1] = null;
         num--;
@@ -53,12 +53,13 @@ public class LaatikkoLista {
 
     public void lisaaIndeksiin(int index, Laatikko a) {
 
-        for (int j = index; j < num - 1; j++) {
-            lista[j + 1] = lista[j];
+       
+        for (int copyFrom = num - 1; copyFrom >= index; copyFrom--) {
+            lista[copyFrom + 1] = lista[copyFrom];
         }
+
+        // add the new element
         lista[index] = a;
         num++;
-
     }
-
 }

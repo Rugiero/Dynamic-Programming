@@ -25,9 +25,10 @@ public class Laatikko {
      * @author iangervu@cs
      */
     public void PyoritaLaatikkoa() {
+        int temppituus = this.pituus;
         this.pituus = this.leveys;
         this.leveys = this.korkeus;
-        this.korkeus = this.pituus;
+        this.korkeus = temppituus;
 
     }
 
@@ -40,8 +41,9 @@ public class Laatikko {
      * @author iangervu@cs
      */
     public void KaannaLaatikko90astetta() {
+        int temppituus = this.pituus;
         this.pituus = this.leveys;
-        this.leveys = this.pituus;
+        this.leveys = temppituus;
 
     }
 
@@ -98,6 +100,7 @@ public class Laatikko {
      * @return
      */
     public boolean OnkoSama(Laatikko o) {
+        
 
         boolean pisinmitta = (LaatikonPisimmanSivunMitta() == o.LaatikonPisimmanSivunMitta());
         boolean lyhyinmitta = (LaatikonLyhyimmanSivunMitta() == o.LaatikonLyhyimmanSivunMitta());
