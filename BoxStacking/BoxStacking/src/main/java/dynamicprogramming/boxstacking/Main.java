@@ -14,97 +14,51 @@ public class Main {
     //private static LaatikkoLista laatikot = new LaatikkoLista();
     //laatikot annetaan listassa
     @SuppressWarnings("empty-statement")
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         LaatikkoLista laatikot = new LaatikkoLista();
         ////testausta
         Scanner input = new Scanner(System.in);
-
-//        while (true) {
-//            System.out.println("Lisataanko laatikko, 'K'','E'");
-//            if (input.nextLine().equals("K")) {
-//                Laatikonlisays(laatikot);
-//            } else {
-//                break;
-//            }
-//        Laatikko laatikko = new Laatikko(4, 3, 4);
-//        laatikot.lisaa(laatikko);
-////                    laatikot.lisaa(new Laatikko(3, 3, 3));
-////                    laatikot.lisaa(new Laatikko(2, 2, 2));
-//
-//        for (int i = 0; i < 6; i++) {
-//            laatikko.PyoritaLaatikkoa();
-//
-//            System.out.println(laatikko.pituus + " " + laatikko.leveys + " " + laatikko.korkeus);
-//
-//            if (i == 2) {
-//                laatikko.KaannaLaatikko90astetta();
-//            }
-//        }
-//
-//        PakkaaLaatikot jarjestalaatikot = new PakkaaLaatikot(laatikot);
-//        jarjestalaatikot.Aloita();
-        double[] arvot = new double[50];
-        double[] laatikoidenmaara = new double[50];
-        double[] tyhjatila = new double[50];
-
-        ArrayList<double[]> arvotjalaatikoidenmaara = new ArrayList<>();
-        ArrayList<double[]> tyhjatilajalaatikoidenmaara = new ArrayList<>();
-
-        Random random = new Random();
-        outerloop:
-        for (int i = 1; i < 100; i++) {
-            laatikot = new LaatikkoLista();
-
-            long ka = 0;
-            for (int j = 0; j <  20; j++) {
-
-                for (int k = 0; k < i; k++) {
-
-                    laatikot.lisaa(new Laatikko(random.nextInt(5) + 1, random.nextInt(5) + 1, random.nextInt(5) + 1));
-
-                }
-                PakkaaLaatikot jarjestalaatikot = new PakkaaLaatikot(laatikot);
-
-                long aikaAlussa = System.currentTimeMillis();
-                jarjestalaatikot.Aloita();
-                long aikaLopussa = System.currentTimeMillis();
-                ka = (ka + (aikaLopussa - aikaAlussa));
-                laatikot = new LaatikkoLista();
-                tyhjatila[i] = jarjestalaatikot.kontti.LaskeTyhjaTila();
-
-            }
-            arvot[i] = ka / 50;
-            laatikoidenmaara[i] = i;
-
+        double[] keskiarvot = new double[30];
+        double[] xakseli = new double[30];
+        for (int i = 1; i <= 10; i++) {
+            keskiarvot[i - 1] = lisaaLaatikoitaPalautaKeskiarvo(i);
+            xakseli[i - 1] = i;
         }
 
-        arvotjalaatikoidenmaara.add(arvot);
-        arvotjalaatikoidenmaara.add(laatikoidenmaara);
+        ArrayList<double[]> arvot = new ArrayList<>();
+        arvot.add(xakseli);
+        arvot.add(keskiarvot);
 
-        tyhjatilajalaatikoidenmaara.add(tyhjatila);
-        tyhjatilajalaatikoidenmaara.add(laatikoidenmaara);
+        piirraKuvaaja plot = new piirraKuvaaja("otsikko", "y", "x", arvot);
+        plot.Piirretaankuvaaja();
+        plot.setVisible(true);
 
-        piirraKuvaaja kuvanpiirtaja = new piirraKuvaaja("holo", "arvot", "laatikoidenmaara", arvotjalaatikoidenmaara);
-        kuvanpiirtaja.Piirretaankuvaaja();
-        kuvanpiirtaja.setVisible(true);
+    }
 
-        piirraKuvaaja kuvanpiirtaja2 = new piirraKuvaaja("holo", "tyhjatila", "laatikoidenmaara", tyhjatilajalaatikoidenmaara);
-        kuvanpiirtaja2.Piirretaankuvaaja();
-        kuvanpiirtaja2.setVisible(true);
-//                    laatikot.lisaa(new Laatikko(4, 4, 4));
-//                    laatikot.lisaa(new Laatikko(3, 3, 3));
-//                    laatikot.lisaa(new Laatikko(2, 2, 2));
-        // 
-        PakkaaLaatikot jarjestalaatikot = new PakkaaLaatikot(laatikot);
-        jarjestalaatikot.Aloita();
+    public static double lisaaLaatikoitaPalautaKeskiarvo(int laatikoita) throws InterruptedException {
 
-        /**
-         *
-         * Lisätään laatikko luokkamuuttujaan 'laatikot'.
-         *
-         */
+        double ka = 0;
+        for (int j = 0; j < 10; j++) {
+            LaatikkoLista laatikot = new LaatikkoLista();
+            for (int i = 1; i <= laatikoita; i++) {
+                laatikot.lisaa(new Laatikko(3, 3, 3));
+                laatikot.lisaa(new Laatikko(1, 2, 1));
+                laatikot.lisaa(new Laatikko(1, 1, 4));
+
+            }
+            double aikaAlussa = System.currentTimeMillis();
+            PakkaaLaatikot laatikonpakkaus = new PakkaaLaatikot(laatikot);
+            laatikonpakkaus.Aloita();
+            double aikaLopussa = System.currentTimeMillis();
+            ka = (ka + (aikaLopussa - aikaAlussa));
+            Thread.sleep(1);
+        }
+       
+        return ka / (double) 10;
+
     }
 }
+
 //
 //    public static void Laatikonlisays(LaatikkoLista laatikot) {
 //        Scanner input = new Scanner(System.in);

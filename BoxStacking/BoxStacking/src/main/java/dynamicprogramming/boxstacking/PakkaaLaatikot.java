@@ -101,24 +101,24 @@ public final class PakkaaLaatikot {
 
     public void Aloita() {
 
-        for (int i = 0; i < alajarjestys.koko(); i++) {
-
-            System.out.println(alajarjestys.poimi(i).LaatikonAla());
-        }
-
-        System.out.println("______");
-        for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
-            System.out.println(tilavuusjarjestys.poimi(i).LaatikonTilavuus());
-        }
-        System.out.println("__________");
+//        for (int i = 0; i < alajarjestys.koko(); i++) {
+//
+//            System.out.println(alajarjestys.poimi(i).LaatikonAla());
+//        }
+//
+//        System.out.println("______");
+//        for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
+//            System.out.println(tilavuusjarjestys.poimi(i).LaatikonTilavuus());
+//        }
+//        System.out.println("__________");
         MaaritaKontinMitat();
 
         VAIHE1();
-        System.out.println("kontin leveys" + kontti.leveys);
-        System.out.println("kontin korkeus" + kontti.korkeus);
-        System.out.println("kontin pituus" + kontti.pituus);
-        System.out.println("kontin tilavuus:" + kontti.LaatikonTilavuus());
-        System.out.println("tyhjatila:" + kontti.LaskeTyhjaTila());
+//        System.out.println("kontin leveys" + kontti.leveys);
+//        System.out.println("kontin korkeus" + kontti.korkeus);
+//        System.out.println("kontin pituus" + kontti.pituus);
+//        System.out.println("kontin tilavuus:" + kontti.LaatikonTilavuus());
+//        System.out.println("tyhjatila:" + kontti.LaskeTyhjaTila());
 
 //        System.out.println(kontti.laatikot.get(0).pituus + " " + kontti.laatikot.get(0).leveys + " " + kontti.laatikot.get(0).korkeus);
 //        System.out.println(kontti.laatikot.get(0).LaatikonTilavuus());

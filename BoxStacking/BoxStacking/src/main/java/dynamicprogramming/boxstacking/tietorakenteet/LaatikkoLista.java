@@ -19,7 +19,7 @@ public class LaatikkoLista {
     private int num;
 
     public LaatikkoLista() {
-        this.kapasiteetti = 100;
+        this.kapasiteetti = 1000;
         lista = new Laatikko[kapasiteetti];
         num = 0;
     }
