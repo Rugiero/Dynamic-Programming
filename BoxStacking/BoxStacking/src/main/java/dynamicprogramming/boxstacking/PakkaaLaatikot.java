@@ -1,6 +1,8 @@
 package dynamicprogramming.boxstacking;
 
-import dynamicprogramming.boxstacking.tietorakenteet.JarjestettyLaatikkoLista;
+import Sailiot.Kontti;
+import Sailiot.Laatikko;
+import Tietorakenteet.JarjestettyLaatikkoLista;
 
 /**
  * Luokka järjestää laatikot LAFF 'Largest area first firt'- algoritmin
@@ -14,7 +16,11 @@ public final class PakkaaLaatikot {
     private JarjestettyLaatikkoLista tilavuusjarjestys = new JarjestettyLaatikkoLista() {
         @Override
         public int vertaa(Laatikko o, Laatikko o1) {
-            return o.LaatikonTilavuus() - o1.LaatikonTilavuus();
+            if (o.LaatikonTilavuus() < o1.LaatikonTilavuus()) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
     };
 
@@ -43,15 +49,12 @@ public final class PakkaaLaatikot {
      */
 
     public PakkaaLaatikot(JarjestettyLaatikkoLista laatikot) {
-
+        System.out.println("laatikoiden koko" + laatikot.koko());
         for (int i = 0; i < laatikot.koko(); i++) {
             tilavuusjarjestys.lisaa(laatikot.poimi(i));
             alajarjestys.lisaa(laatikot.poimi(i));
         }
-        System.out.println(tilavuusjarjestys.poimi(0));
-        System.out.println(laatikot.koko());
-        System.out.println(alajarjestys.koko());
-        System.out.println(tilavuusjarjestys.koko());
+
         tilavuusjarjestys.Jarjesta();
         alajarjestys.Jarjesta();
         kontti = new Kontti(0, 0, 0);
@@ -63,9 +66,10 @@ public final class PakkaaLaatikot {
      *
      */
 
-    public void Aloita() {
-        MaaritaKontinMitat();
-        VAIHE1();
+    public void aloita() {
+        
+        maaritaKontinMitat();
+        vaihe1();
     }
 
     /**
@@ -74,9 +78,9 @@ public final class PakkaaLaatikot {
      * määritellään aluksi nolla.
      *
      */
-    public void MaaritaKontinMitat() {
-        int pituus = 0;
-        int leveys = 0;
+    public void maaritaKontinMitat() {
+        double pituus = 0;
+        double leveys = 0;
         for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
 
             if (tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta() >= pituus) {
@@ -105,7 +109,7 @@ public final class PakkaaLaatikot {
      * Laskee millä laatikolla on suurin pinta-ala. Syöttää laatikon indeksin,
      * ja asettaa aatikon tilavuudeksi nollan.
      */
-    public void VAIHE1() {
+    public void vaihe1() {
 
         while (alajarjestys.koko() != 0) {
             kontti.korkeus = kontti.korkeus + alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
@@ -121,7 +125,7 @@ public final class PakkaaLaatikot {
      */
     public void AsetaLaatikkoVAIHEESSA1() {
         //Ensimmäiseksi otetaan suurimman alan omaava laatikko:
-        int vapaaaluekorkeus = alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
+        double vapaaaluekorkeus = alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
         Laatikko pyoriva = alajarjestys.poimi(0);
         Laatikko laatikko = pyoriva;
         alajarjestys.poista(0);

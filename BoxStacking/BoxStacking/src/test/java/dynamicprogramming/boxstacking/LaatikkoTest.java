@@ -5,6 +5,7 @@
  */
 package dynamicprogramming.boxstacking;
 
+import Sailiot.Laatikko;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -68,54 +69,54 @@ public class LaatikkoTest {
     @Test
     public void sivujenMittoja() {
         Laatikko laatikko1 = new Laatikko(1, 1, 1);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(1, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(1, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+       assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+        assertTrue(1== laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(1== laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
-        laatikko1 = new Laatikko(1, 2, 3);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(3, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+        laatikko1 = new Laatikko(3, 1, 2);
+       assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+        assertTrue(3== laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(2==laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
         laatikko1 = new Laatikko(2, 1, 3);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(3, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+       assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+       assertTrue(3==laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(2== laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
         laatikko1 = new Laatikko(3, 2, 1);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(3, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+       assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+    assertTrue(3== laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(2== laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
         laatikko1 = new Laatikko(1, 1, 2);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(1, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+        assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+        assertTrue(2== laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(1== laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
         laatikko1 = new Laatikko(1, 2, 2);
-        assertEquals(1, laatikko1.LaatikonLyhyimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonPisimmanSivunMitta());
-        assertEquals(2, laatikko1.LaatikonToiseksiPisimmanSivunMitta());
+        assertTrue(1== laatikko1.LaatikonLyhyimmanSivunMitta());
+        assertTrue(2== laatikko1.LaatikonPisimmanSivunMitta());
+        assertTrue(2== laatikko1.LaatikonToiseksiPisimmanSivunMitta());
 
     }
 
     @Test
     public void laatikonKokoja() {
         Laatikko laatikko1 = new Laatikko(1, 1, 1);
-        assertEquals(1, laatikko1.LaatikonTilavuus());
-        assertEquals(6, laatikko1.LaatikonAla());
+        assertTrue(1 == laatikko1.LaatikonTilavuus());
+        assertTrue(6 == laatikko1.LaatikonAla());
 
         laatikko1 = new Laatikko(2, 1, 3);
-        assertEquals(6, laatikko1.LaatikonTilavuus());
-        assertEquals(22, laatikko1.LaatikonAla());
+        assertTrue(6 == laatikko1.LaatikonTilavuus());
+        assertTrue(22 == laatikko1.LaatikonAla());
 
         laatikko1 = new Laatikko(1, 2, 3);
-        assertEquals(6, laatikko1.LaatikonTilavuus());
-        assertEquals(22, laatikko1.LaatikonAla());
+        assertTrue(6 == laatikko1.LaatikonTilavuus());
+        assertTrue(22 == laatikko1.LaatikonAla());
 
         laatikko1 = new Laatikko(1, 3, 2);
-        assertEquals(6, laatikko1.LaatikonTilavuus());
-        assertEquals(22, laatikko1.LaatikonAla());
+        assertTrue(6 == laatikko1.LaatikonTilavuus());
+        assertTrue(22 == laatikko1.LaatikonAla());
 
     }
 

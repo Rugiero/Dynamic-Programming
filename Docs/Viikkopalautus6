@@ -1,0 +1,4 @@
+Tällä viikolla tein dokumentteihin graafisen esityksen rekursiosta(ehkä auttaa hahmottanaan ohjelman kulkua, ehkä ei :) ), ja graafisen esityksen algoritmin suoritusajasta eri määrillä laatikoita.
+Suurin uudistus koodissa on jarjestysmetodin poistaminen PakkaaLaatikot- luokasta. Tämä helpottaisi laajentamista. Muutin LaatikkoLista- luokan nimeksi JarjestettyLaatikkoLista- ja siirsin kyseisen metodin sinne. Nyt järjestyskriteeri pitää määritellä erikseen aina uuden listan luodessa ohittamalla vertaa() -metodi haluamallaan kriteerillä. Oletusasetuksilla jarjest()- metodi ei tee mitään.
+Algoritmi tulostaa nyt muutamia arvoja. Pienellä muutoksella on mahdollista saada informaatio laatikoiden pakkausjärjestyksestä ja asennosta, sekä sijainnista. Algoritmiin aikalailla suoraan laajentaa graafiseksi.
+

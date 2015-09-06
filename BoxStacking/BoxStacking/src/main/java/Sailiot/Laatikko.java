@@ -1,4 +1,4 @@
-package dynamicprogramming.boxstacking;
+package Sailiot;
 
 /**
  * Laaitkolla on ominaisuudet : pituus, leveys, syvyys.
@@ -7,11 +7,11 @@ package dynamicprogramming.boxstacking;
  */
 public class Laatikko {
 
-    public int pituus;
-    public int leveys;
-    public int korkeus;
+    public double pituus;
+    public double leveys;
+    public double korkeus;
 
-    public Laatikko(int pituus, int leveys, int korkeus) {
+    public Laatikko(double pituus, double leveys, double korkeus) {
         this.pituus = pituus;
         this.leveys = leveys;
         this.korkeus = korkeus;
@@ -25,7 +25,7 @@ public class Laatikko {
      * @author iangervu@cs
      */
     public void PyoritaLaatikkoa() {
-        int temppituus = this.pituus;
+        double temppituus = this.pituus;
         this.pituus = this.leveys;
         this.leveys = this.korkeus;
         this.korkeus = temppituus;
@@ -41,7 +41,7 @@ public class Laatikko {
      * @author iangervu@cs
      */
     public void KaannaLaatikko90astetta() {
-        int temppituus = this.pituus;
+        double temppituus = this.pituus;
         this.pituus = this.leveys;
         this.leveys = temppituus;
 
@@ -52,7 +52,7 @@ public class Laatikko {
      * @author iangervu@cs
      * @return Lyhyimmän sivun mitta.
      */
-    public int LaatikonLyhyimmanSivunMitta() {
+    public double LaatikonLyhyimmanSivunMitta() {
         return Math.min(Math.min(this.pituus, this.leveys), this.korkeus);
     }
 
@@ -61,7 +61,7 @@ public class Laatikko {
      * @author iangervu@cs
      * @return Laatikon pisimmän sivun mitta
      */
-    public int LaatikonPisimmanSivunMitta() {
+    public double LaatikonPisimmanSivunMitta() {
         return Math.max(Math.max(this.pituus, this.leveys), this.korkeus);
 
     }
@@ -71,14 +71,14 @@ public class Laatikko {
      * @author iangervu@cs
      * @return Toiseksi pisimmän sivun mitta.
      */
-    public int LaatikonToiseksiPisimmanSivunMitta() {
-        int temppituus = this.pituus;
-        int templeveys = this.leveys;
-        int tempkorkeus = this.korkeus;
+    public double LaatikonToiseksiPisimmanSivunMitta() {
+        double temppituus = this.pituus;
+        double templeveys = this.leveys;
+        double tempkorkeus = this.korkeus;
         boolean lyhyinmerkitty = false;
         boolean pisinmerkitty = false;
 
-        int[] laatikko = {temppituus, templeveys, tempkorkeus};
+        double[] laatikko = {temppituus, templeveys, tempkorkeus};
         for (int i = 0; i < 3; i++) {
             if (lyhyinmerkitty && pisinmerkitty) {
                 break;
@@ -102,7 +102,7 @@ public class Laatikko {
      * @author iangervu@cs
      * @return Laatikon ala.
      */
-    public int LaatikonAla() {
+    public double LaatikonAla() {
         return 2 * (pituus * leveys) + 2 * (pituus * korkeus) + 2 * (korkeus * leveys);
     }
 
@@ -111,7 +111,7 @@ public class Laatikko {
      * @author iangervu@cs
      * @return Laatikon tilavuus.
      */
-    public int LaatikonTilavuus() {
+    public double LaatikonTilavuus() {
         return pituus * korkeus * leveys;
     }
 

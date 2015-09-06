@@ -6,7 +6,8 @@
 package dynamicprogramming.boxstacking;
 
 
-import dynamicprogramming.boxstacking.tietorakenteet.JarjestettyLaatikkoLista;
+import Sailiot.Laatikko;
+import Tietorakenteet.JarjestettyLaatikkoLista;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,10 +50,10 @@ public class PakkaaLaatikotTest {
         laatikot.lisaa(new Laatikko(1, 4, 1));
 
         PakkaaLaatikot olio =  new PakkaaLaatikot(laatikot);
-        olio.MaaritaKontinMitat();
-        assertEquals(0, olio.kontti.korkeus);
-        assertEquals(4, olio.kontti.pituus);
-        assertEquals(3, olio.kontti.leveys);
+        olio.maaritaKontinMitat();
+        assertTrue(0== olio.kontti.korkeus);
+        assertTrue(4== olio.kontti.pituus);
+        assertTrue(3== olio.kontti.leveys);
 
         laatikot = new JarjestettyLaatikkoLista();
 
@@ -62,10 +63,10 @@ public class PakkaaLaatikotTest {
         laatikot.lisaa(new Laatikko(1, 1, 1));
 
         olio = new PakkaaLaatikot(laatikot);
-        olio.MaaritaKontinMitat();
-        assertEquals(0, olio.kontti.korkeus);
-        assertEquals(3, olio.kontti.pituus);
-        assertEquals(3, olio.kontti.leveys);
+        olio.maaritaKontinMitat();
+       assertTrue(0== olio.kontti.korkeus);
+        assertTrue(3== olio.kontti.pituus);
+        assertTrue(3== olio.kontti.leveys);
 
     }
 

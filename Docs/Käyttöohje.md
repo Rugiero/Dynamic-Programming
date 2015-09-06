@@ -1,0 +1,4 @@
+Käyttäminen on helppoa:
+Ohjelma kysyy lisätäänkö laatikko, vastaa 'K', 'E'. Anna laatikoiden koko (pituus,leveys, korkeus).
+
+Ohjelma 'pakkaa' laatikot LAFF- algoritmin mukaisesti ja tulostaa kontin lopullisen koon ja tyhjän tilan osuuden kontista, sekä paljonko aikaa algoritmin suorittamiseen meni.

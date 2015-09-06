@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dynamicprogramming.boxstacking.tietorakenteet;
+package Tietorakenteet;
 
-import dynamicprogramming.boxstacking.Laatikko;
+import Sailiot.Laatikko;
 
 /**
  * Arraylist- vastine.
@@ -110,41 +110,22 @@ public class JarjestettyLaatikkoLista {
 
     /**
      * Jarjestaa listan halutun ominaisuuden mukaan. Jos vertaa- metodia ei
-     * ylitä, niin metodi ei tee mitään. Algoritmi on aikalailla bruteforce.
+     * ylitä, niin metodi ei tee mitään. Algoritmi on niin kutsuttu Bubble sort.
      *
      */
     public void Jarjesta() {
-        Laatikko[] jarjestetty = new Laatikko[kapasiteetti];
-        int index = 0;
-        outerloop:
-        for (int i = 0; i < num; i++) {
-
-            if (index == 0) {
-                jarjestetty[0] = lista[i];
-                index++;
-                continue;
-            }
-
-            for (int j = 0; j < index; j++) {
-
-                if (vertaa(lista[i], jarjestetty[j]) > 0) {
-
-                    for (int copyFrom = num - 1; copyFrom >= index; copyFrom--) {
-                        jarjestetty[copyFrom + 1] = jarjestetty[copyFrom];
-                    }
-
-                    jarjestetty[index] = lista[i];
-                    index++;
-                    continue outerloop;
+        int c, d;
+        Laatikko swap;
+        for (c = 0; c < (num - 1); c++) {
+            for (d = 0; d < num - c - 1; d++) {
+                if (vertaa(lista[d], lista[d + 1]) > 0) /* For descending order use < */ {
+                    swap = lista[d];
+                    lista[d] = lista[d + 1];
+                    lista[d + 1] = swap;
                 }
-
             }
-            jarjestetty[index] = lista[i];
-            index++;
-
         }
-        lista = jarjestetty;
-        num = index;
+
     }
 
     /**
@@ -156,6 +137,7 @@ public class JarjestettyLaatikkoLista {
      * @return
      */
     public int vertaa(Laatikko o, Laatikko o1) {
+
         return 0;
     }
 

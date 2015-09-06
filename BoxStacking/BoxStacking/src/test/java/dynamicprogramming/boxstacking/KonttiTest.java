@@ -5,6 +5,8 @@
  */
 package dynamicprogramming.boxstacking;
 
+import Sailiot.Kontti;
+import Sailiot.Laatikko;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

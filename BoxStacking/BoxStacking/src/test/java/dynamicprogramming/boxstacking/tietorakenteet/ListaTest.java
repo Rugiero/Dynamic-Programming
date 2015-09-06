@@ -5,7 +5,8 @@
  */
 package dynamicprogramming.boxstacking.tietorakenteet;
 
-import dynamicprogramming.boxstacking.Laatikko;
+import Sailiot.Laatikko;
+import Tietorakenteet.JarjestettyLaatikkoLista;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -117,15 +118,8 @@ public class ListaTest {
 
     }
 
-    public void Jarjesta() {
 
-        JarjestettyLaatikkoLista l = new JarjestettyLaatikkoLista();
-        l.lisaa(new Laatikko(1, 2, 3));
-        l.lisaa(new Laatikko(2, 1, 1));
-        l.lisaa(new Laatikko(1, 1, 3));
-
-        l.Jarjesta();
-
-    }
+    
+    
 
 }

@@ -111,3 +111,11 @@ ______
 216
 Järjestetty!
 ```
+
+_______________
+6.9.2015
+
+Testattu erilaisilla syötteillä. Näyttäisi lupaavalta. Esim. syötteellä (2,2,2), (1,1,1), (1,1,1), (1,1,1) tyhjä tila 0, kontin koko (2,2,3). Syötteellä (2,2,2), (1,1,1), (1,1,1), (1,1,1), (1,1,1) kontin koko (2,2,4), tyhjää tilaa 3. Niin kuin pitääkin. 
+
+
+
