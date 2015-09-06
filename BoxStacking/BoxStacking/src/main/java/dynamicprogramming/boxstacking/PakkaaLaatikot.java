@@ -1,131 +1,71 @@
 package dynamicprogramming.boxstacking;
 
-import dynamicprogramming.boxstacking.tietorakenteet.LaatikkoLista;
-import java.util.ArrayList;
-import java.util.Iterator;
+import dynamicprogramming.boxstacking.tietorakenteet.JarjestettyLaatikkoLista;
 
 /**
- * Luokkaan tulee kaikki tarvittavat metodit laatikoiden järjestämiseksi
- * mahdollisimman pieneen tilaan. Luokka käyttää luokkamuuttujia.
+ * Luokka järjestää laatikot LAFF 'Largest area first firt'- algoritmin
+ * mukaisesti. Halutessaan saa luokasta ulos laatikoiden järjestyksen sekä
+ * niiden asennon.
+ *
  */
 public final class PakkaaLaatikot {
 
     public Kontti kontti;
-    private final LaatikkoLista tilavuusjarjestys = new LaatikkoLista();
-    private final LaatikkoLista alajarjestys = new LaatikkoLista();
+    private JarjestettyLaatikkoLista tilavuusjarjestys = new JarjestettyLaatikkoLista() {
+        @Override
+        public int vertaa(Laatikko o, Laatikko o1) {
+            return o.LaatikonTilavuus() - o1.LaatikonTilavuus();
+        }
+    };
 
-    /**
-     * Luodaan luokka. Laatikot annetaan Array Listinä taulukoita, joihin on
-     * merkitty järjestyksessä laatikon leveys, syvyys ja korkeus,
+    private JarjestettyLaatikkoLista alajarjestys = new JarjestettyLaatikkoLista() {
+        @Override
+        public int vertaa(Laatikko o, Laatikko o1) {
+            if (o.LaatikonAla() >= o1.LaatikonAla()) {
+                if (o.LaatikonAla() == o1.LaatikonAla()) {
+                    //Jos laatikoiden ala on sama, niin ensisijainen laatikko on lyhyimmän sivun omaava.
+                    if (o.LaatikonLyhyimmanSivunMitta() < o1.LaatikonLyhyimmanSivunMitta()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                } else {
+                    return 1;
+                }
+            }
+            return -1;
+        }
+    };
+    /*
+     *Konstruktori lähinnä testaamista varten.
      *
-     * @param laatikot
+     *
      */
-    public PakkaaLaatikot(LaatikkoLista laatikot) {
-        JarjestaLaatikot(laatikot);
+
+    public PakkaaLaatikot(JarjestettyLaatikkoLista laatikot) {
+
+        for (int i = 0; i < laatikot.koko(); i++) {
+            tilavuusjarjestys.lisaa(laatikot.poimi(i));
+            alajarjestys.lisaa(laatikot.poimi(i));
+        }
+        System.out.println(tilavuusjarjestys.poimi(0));
+        System.out.println(laatikot.koko());
+        System.out.println(alajarjestys.koko());
+        System.out.println(tilavuusjarjestys.koko());
+        tilavuusjarjestys.Jarjesta();
+        alajarjestys.Jarjesta();
         kontti = new Kontti(0, 0, 0);
 
     }
-
-    /**
-     * Jarjestaa laatikot tilavuus- ja alajärjestykseen. ja alajarjestykseen.
-     * Lisäksi alajärjestyksessä on ehto että pienimmän sivun(asetetaan
-     * korkeudeksi vaiheessa 1) omaava laatikko asetetaan ensimmäiseksi.
+    /*
+     *Pakkaa annetun listan laatikoita.
      *
-     * @param laatikot
+     *
      */
-    public void JarjestaLaatikot(LaatikkoLista laatikot) {
-        for (int k = 0; k < Integer.MAX_VALUE; k++) {
-
-            if (k >= laatikot.koko()) {
-
-                break;
-            }
-            Laatikko laatikko = laatikot.poimi(k);
-
-            if (tilavuusjarjestys.koko() == 0) {
-                tilavuusjarjestys.lisaa(laatikko);
-                alajarjestys.lisaa(laatikko);
-                continue;
-            }
-
-            for (int i = 0; i <= tilavuusjarjestys.koko(); i++) {
-
-                if (i == tilavuusjarjestys.koko()) {
-                    tilavuusjarjestys.lisaa(laatikko);
-
-                    break;
-                }
-
-                Laatikko laatikko1 = tilavuusjarjestys.poimi(i);
-
-                if (laatikko.LaatikonTilavuus() >= laatikko1.LaatikonTilavuus()) {
-
-                    tilavuusjarjestys.lisaaIndeksiin(i, laatikko);
-
-                    break;
-                }
-
-            }
-            for (int j = 0; j <= alajarjestys.koko(); j++) {
-
-                if (j == alajarjestys.koko()) {
-                    alajarjestys.lisaa(laatikko);
-
-                    break;
-                }
-
-                Laatikko laatikko1 = alajarjestys.poimi(j);
-
-                if (laatikko.LaatikonAla() >= laatikko1.LaatikonAla()) {
-                    if (laatikko.LaatikonTilavuus() == laatikko1.LaatikonTilavuus()) {
-                        if (laatikko.LaatikonLyhyimmanSivunMitta() < laatikko1.LaatikonLyhyimmanSivunMitta()) {
-                            alajarjestys.lisaaIndeksiin(j, laatikko);
-
-                            break;
-                        } else {
-                            alajarjestys.lisaaIndeksiin(j + 1, laatikko);
-
-                            break;
-                        }
-                    } else {
-                        alajarjestys.lisaaIndeksiin(j, laatikko);
-
-                        break;
-                    }
-                }
-
-            }
-        }
-
-    }
 
     public void Aloita() {
-
-//        for (int i = 0; i < alajarjestys.koko(); i++) {
-//
-//            System.out.println(alajarjestys.poimi(i).LaatikonAla());
-//        }
-//
-//        System.out.println("______");
-//        for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
-//            System.out.println(tilavuusjarjestys.poimi(i).LaatikonTilavuus());
-//        }
-//        System.out.println("__________");
         MaaritaKontinMitat();
-
         VAIHE1();
-//        System.out.println("kontin leveys" + kontti.leveys);
-//        System.out.println("kontin korkeus" + kontti.korkeus);
-//        System.out.println("kontin pituus" + kontti.pituus);
-//        System.out.println("kontin tilavuus:" + kontti.LaatikonTilavuus());
-//        System.out.println("tyhjatila:" + kontti.LaskeTyhjaTila());
-
-//        System.out.println(kontti.laatikot.get(0).pituus + " " + kontti.laatikot.get(0).leveys + " " + kontti.laatikot.get(0).korkeus);
-//        System.out.println(kontti.laatikot.get(0).LaatikonTilavuus());
-//        
-//         System.out.println(kontti.laatikot.get(0).pituus + " " + kontti.laatikot.get(0).leveys + " " + kontti.laatikot.get(0).korkeus);
-//        System.out.println(kontti.laatikot.get(0).pituus * kontti.laatikot.get(0).leveys * kontti.laatikot.get(0).korkeus);
-//        System.out.println("Järjestetty!");
     }
 
     /**
@@ -137,8 +77,6 @@ public final class PakkaaLaatikot {
     public void MaaritaKontinMitat() {
         int pituus = 0;
         int leveys = 0;
-        
-
         for (int i = 0; i < tilavuusjarjestys.koko(); i++) {
 
             if (tilavuusjarjestys.poimi(i).LaatikonPisimmanSivunMitta() >= pituus) {
@@ -170,7 +108,6 @@ public final class PakkaaLaatikot {
     public void VAIHE1() {
 
         while (alajarjestys.koko() != 0) {
-
             kontti.korkeus = kontti.korkeus + alajarjestys.poimi(0).LaatikonLyhyimmanSivunMitta();
             AsetaLaatikkoVAIHEESSA1();
         }
@@ -188,7 +125,7 @@ public final class PakkaaLaatikot {
         Laatikko pyoriva = alajarjestys.poimi(0);
         Laatikko laatikko = pyoriva;
         alajarjestys.poista(0);
-        PoistaLaatikkoListasta(tilavuusjarjestys, pyoriva);
+        tilavuusjarjestys.poistaLaatikko(pyoriva);
 
         //asetetaan laatikko niin, että korkeus on sen lyhyin sivu
         for (int i = 0; i < 6; i++) {
@@ -240,13 +177,13 @@ public final class PakkaaLaatikot {
                 laatikko.PyoritaLaatikkoa();
 
                 if (laatikko.pituus <= vapaaalue1.pituus && laatikko.leveys <= vapaaalue1.leveys && laatikko.korkeus <= vapaaalue1.korkeus) {
-                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+                    alajarjestys.poistaLaatikko(laatikko);
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
                     Laatikko vapaaalue11 = new Laatikko(vapaaalue1.pituus, vapaaalue1.leveys - laatikko.leveys, vapaaalue1.korkeus);
                     Laatikko vapaaalue22 = new Laatikko(vapaaalue1.pituus - laatikko.pituus, vapaaalue1.leveys, vapaaalue1.korkeus);
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    tilavuusjarjestys.poistaLaatikko(laatikko);
 
                     VAIHE2(vapaaalue11, vapaaalue22);
                     //Alueesta poistetaan vapaaalue1 kanssa leikkaava alue:
@@ -259,13 +196,13 @@ public final class PakkaaLaatikot {
 
                 }
                 if (laatikko.pituus <= vapaaalue2.pituus && laatikko.leveys <= vapaaalue2.leveys && laatikko.korkeus <= vapaaalue2.korkeus) {
-                    PoistaLaatikkoListasta(alajarjestys, laatikko);
+                    alajarjestys.poistaLaatikko(laatikko);
                     kontti.lisaaLaatikko(laatikko);
 
                     //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
                     Laatikko vapaaalue11 = new Laatikko(vapaaalue2.pituus, vapaaalue2.leveys - laatikko.leveys, vapaaalue2.korkeus);
                     Laatikko vapaaalue22 = new Laatikko(vapaaalue2.pituus - laatikko.pituus, vapaaalue2.leveys, vapaaalue2.korkeus);
-                    PoistaLaatikkoListasta(tilavuusjarjestys, laatikko);
+                    tilavuusjarjestys.poistaLaatikko(laatikko);
 
                     VAIHE2(vapaaalue11, vapaaalue22);
                     //Alueesta poistetaan vapaaalue2 kanssa leikkaava alue:
@@ -284,47 +221,5 @@ public final class PakkaaLaatikot {
             }
 
         }
-
-    }
-
-    /**
-     * Asettaa laatikon vapaalle alueelle.
-     *
-     * @param laatikko
-     * @param vapaaalue
-     */
-//    public void AsetaLaatikko(Laatikko laatikko, Laatikko vapaaalue) {
-//
-//        PoistaLaatikkoListasta(alajarjestys, laatikko);
-//        kontti.lisaaLaatikko(laatikko);
-//
-//        //kun mahtuva laatikko sijoitetaan, vapaiden alueiden alat:
-//        Laatikko vapaaalue1 = new Laatikko(vapaaalue.pituus, vapaaalue.pituus - laatikko.pituus, vapaaalue.korkeus);
-//        Laatikko vapaaalue2 = new Laatikko(vapaaalue.pituus - laatikko.pituus, laatikko.leveys, vapaaalue.korkeus);
-//
-//        VAIHE2(vapaaalue1, vapaaalue2);
-//
-//    }
-    /**
-     * Poistaa laatikon listasta, jos se löytyy jotenkin päin sieltä. Käytetään
-     * pitämään kokojärjestyslistat ajantasalla.
-     *
-     * @param lista
-     * @param poistettava
-     */
-    public void PoistaLaatikkoListasta(LaatikkoLista lista, Laatikko poistettava) {
-        int poistoindeksi = 0;
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            if (lista.poimi(i) == null) {
-                break;
-            }
-            if (poistettava.OnkoSama(lista.poimi(i))) {
-                poistoindeksi = i;
-                break;
-
-            }
-
-        }
-        lista.poista(poistoindeksi);
     }
 }

@@ -47,15 +47,30 @@ public class Laatikko {
 
     }
 
+    /**
+     *
+     * @author iangervu@cs
+     * @return Lyhyimmän sivun mitta.
+     */
     public int LaatikonLyhyimmanSivunMitta() {
         return Math.min(Math.min(this.pituus, this.leveys), this.korkeus);
     }
 
+    /**
+     *
+     * @author iangervu@cs
+     * @return Laatikon pisimmän sivun mitta
+     */
     public int LaatikonPisimmanSivunMitta() {
         return Math.max(Math.max(this.pituus, this.leveys), this.korkeus);
 
     }
 
+    /**
+     *
+     * @author iangervu@cs
+     * @return Toiseksi pisimmän sivun mitta.
+     */
     public int LaatikonToiseksiPisimmanSivunMitta() {
         int temppituus = this.pituus;
         int templeveys = this.leveys;
@@ -63,44 +78,51 @@ public class Laatikko {
         boolean lyhyinmerkitty = false;
         boolean pisinmerkitty = false;
 
-        int[] templaatikot = {temppituus, templeveys, tempkorkeus};
+        int[] laatikko = {temppituus, templeveys, tempkorkeus};
         for (int i = 0; i < 3; i++) {
             if (lyhyinmerkitty && pisinmerkitty) {
                 break;
             }
 
-            if (templaatikot[i] == LaatikonLyhyimmanSivunMitta() && lyhyinmerkitty == false) {
-                templaatikot[i] = 0;
+            if (laatikko[i] == LaatikonLyhyimmanSivunMitta() && lyhyinmerkitty == false) {
+                laatikko[i] = 0;
                 lyhyinmerkitty = true;
             }
-            if (templaatikot[i] == LaatikonPisimmanSivunMitta() && pisinmerkitty == false) {
-                templaatikot[i] = 0;
+            if (laatikko[i] == LaatikonPisimmanSivunMitta() && pisinmerkitty == false) {
+                laatikko[i] = 0;
                 pisinmerkitty = true;
             }
 
         }
-        return Math.max(Math.max(templaatikot[0], templaatikot[1]), templaatikot[2]);
+        return Math.max(Math.max(laatikko[0], laatikko[1]), laatikko[2]);
     }
 
+    /**
+     *
+     * @author iangervu@cs
+     * @return Laatikon ala.
+     */
     public int LaatikonAla() {
         return 2 * (pituus * leveys) + 2 * (pituus * korkeus) + 2 * (korkeus * leveys);
     }
 
+    /**
+     *
+     * @author iangervu@cs
+     * @return Laatikon tilavuus.
+     */
     public int LaatikonTilavuus() {
         return pituus * korkeus * leveys;
     }
 
     /**
-     * Laatikoita ei voi suoraan vertailla sivuja yksi yhteen vertaamalla, sillä
-     * ne voivat olla missä tahansa asennossa. Metodi palauttaa true jos
-     * laatikot ovat samat jossain asennossa.
+     * Palauttaa true jos laatikot ovat indenttiset.
      *
      * @author iangervu@cs
      * @param o
      * @return
      */
     public boolean OnkoSama(Laatikko o) {
-        
 
         boolean pisinmitta = (LaatikonPisimmanSivunMitta() == o.LaatikonPisimmanSivunMitta());
         boolean lyhyinmitta = (LaatikonLyhyimmanSivunMitta() == o.LaatikonLyhyimmanSivunMitta());

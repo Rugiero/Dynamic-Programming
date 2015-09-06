@@ -40,7 +40,7 @@ public class ListaTest {
 
     public void lisaaListaan() {
 
-        LaatikkoLista l = new LaatikkoLista();
+        JarjestettyLaatikkoLista l = new JarjestettyLaatikkoLista();
         assertEquals(0, l.koko());
         l.lisaa(new Laatikko(1, 2, 3));
         l.lisaa(new Laatikko(2, 1, 1));
@@ -51,7 +51,7 @@ public class ListaTest {
         assertEquals(new Laatikko(1, 2, 3), l.poimi(0));
         assertEquals(new Laatikko(1, 1, 3), l.poimi(l.koko() - 1));
 
-        l = new LaatikkoLista();
+        l = new JarjestettyLaatikkoLista();
         l.lisaa(new Laatikko(1, 2, 3));
         l.lisaa(new Laatikko(2, 1, 1));
         l.lisaa(new Laatikko(1, 1, 3));
@@ -67,19 +67,27 @@ public class ListaTest {
         l.lisaaIndeksiin(2, new Laatikko(1, 1, 3));
         l.lisaaIndeksiin(3, new Laatikko(1, 1, 3));
         l.lisaaIndeksiin(1, new Laatikko(1, 1, 3));
-        
-        
-        for(int i =0; i< 15; i++) {
+
+        for (int i = 0; i < 15; i++) {
             assertFalse(l.poimi(i) == null);
         }
-        
 
         assertEquals(15, l.koko());
+
+        JarjestettyLaatikkoLista laatikot = new JarjestettyLaatikkoLista();
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+
+        assertEquals(5, l.koko());
+
     }
 
     public void lisaaIndeksiin() {
 
-        LaatikkoLista l = new LaatikkoLista();
+        JarjestettyLaatikkoLista l = new JarjestettyLaatikkoLista();
 
         l.lisaa(new Laatikko(1, 2, 3));
         l.lisaa(new Laatikko(2, 1, 1));
@@ -94,7 +102,7 @@ public class ListaTest {
     }
 
     public void poistaListasta() {
-        LaatikkoLista l = new LaatikkoLista();
+        JarjestettyLaatikkoLista l = new JarjestettyLaatikkoLista();
         assertEquals(0, l.koko());
         l.lisaa(new Laatikko(1, 2, 3));
         l.lisaa(new Laatikko(2, 1, 1));
@@ -106,6 +114,17 @@ public class ListaTest {
         assertEquals(1, l.koko());
         l.poista(2);
         assertEquals(0, l.koko());
+
+    }
+
+    public void Jarjesta() {
+
+        JarjestettyLaatikkoLista l = new JarjestettyLaatikkoLista();
+        l.lisaa(new Laatikko(1, 2, 3));
+        l.lisaa(new Laatikko(2, 1, 1));
+        l.lisaa(new Laatikko(1, 1, 3));
+
+        l.Jarjesta();
 
     }
 

@@ -4,10 +4,7 @@
  */
 package dynamicprogramming.boxstacking;
 
-import dynamicprogramming.boxstacking.tietorakenteet.LaatikkoLista;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import dynamicprogramming.boxstacking.tietorakenteet.JarjestettyLaatikkoLista;
 
 public class Main {
 
@@ -15,46 +12,21 @@ public class Main {
     //laatikot annetaan listassa
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws InterruptedException {
-        LaatikkoLista laatikot = new LaatikkoLista();
-        ////testausta
-        Scanner input = new Scanner(System.in);
-        double[] keskiarvot = new double[30];
-        double[] xakseli = new double[30];
-        for (int i = 1; i <= 10; i++) {
-            keskiarvot[i - 1] = lisaaLaatikoitaPalautaKeskiarvo(i);
-            xakseli[i - 1] = i;
-        }
-
-        ArrayList<double[]> arvot = new ArrayList<>();
-        arvot.add(xakseli);
-        arvot.add(keskiarvot);
-
-        piirraKuvaaja plot = new piirraKuvaaja("otsikko", "y", "x", arvot);
-        plot.Piirretaankuvaaja();
-        plot.setVisible(true);
-
-    }
-
-    public static double lisaaLaatikoitaPalautaKeskiarvo(int laatikoita) throws InterruptedException {
-
-        double ka = 0;
-        for (int j = 0; j < 10; j++) {
-            LaatikkoLista laatikot = new LaatikkoLista();
-            for (int i = 1; i <= laatikoita; i++) {
-                laatikot.lisaa(new Laatikko(3, 3, 3));
-                laatikot.lisaa(new Laatikko(1, 2, 1));
-                laatikot.lisaa(new Laatikko(1, 1, 4));
-
-            }
-            double aikaAlussa = System.currentTimeMillis();
-            PakkaaLaatikot laatikonpakkaus = new PakkaaLaatikot(laatikot);
-            laatikonpakkaus.Aloita();
-            double aikaLopussa = System.currentTimeMillis();
-            ka = (ka + (aikaLopussa - aikaAlussa));
-            Thread.sleep(1);
-        }
+        JarjestettyLaatikkoLista laatikot = new JarjestettyLaatikkoLista();
+        laatikot.lisaa(new Laatikko(2, 2, 2));
+        laatikot.lisaa(new Laatikko(1, 9, 1));
+        laatikot.lisaa(new Laatikko(1, 3, 6));
+        laatikot.lisaa(new Laatikko(4, 1, 2));
+        laatikot.lisaa(new Laatikko(1, 1, 1));
+             laatikot.lisaa(new Laatikko(2, 3, 1));
+          laatikot.lisaa(new Laatikko(1, 2, 1));
        
-        return ka / (double) 10;
+        PakkaaLaatikot ads = new PakkaaLaatikot(laatikot);
+        ads.Aloita();
+        
+        System.out.println(ads.kontti.LaskeTyhjaTila());
+        
+       
 
     }
 }

@@ -17,31 +17,45 @@ import static org.junit.Assert.*;
  * @author ilari
  */
 public class KonttiTest {
-    
+
     public KonttiTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
-    @Test 
-    
+
+    @Test
+
     @After
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void tyhjaTila() {
+        Laatikko laatikko = new Laatikko(1, 1, 1);
+        Kontti kontti = new Kontti(2, 2, 2);
+        kontti.lisaaLaatikko(laatikko);
+        kontti.lisaaLaatikko(laatikko);
+        kontti.lisaaLaatikko(laatikko);
+        kontti.lisaaLaatikko(laatikko);
+        kontti.lisaaLaatikko(laatikko);
+
+        assertEquals(3, kontti.LaskeTyhjaTila());
+
+        kontti = new Kontti(2, 2, 2);
+        assertEquals(8, kontti.LaskeTyhjaTila());
+        kontti.lisaaLaatikko(new Laatikko(1, 1, 2));
+        assertEquals(6, kontti.LaskeTyhjaTila());
+
+    }
+
 }
